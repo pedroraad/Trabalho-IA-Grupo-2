@@ -15,3 +15,14 @@ A principal limitação deste problema é que a peça usada se move somente em p
 ### Exemplo de solução:
 
 ![Knight's_tour_anim_2](https://github.com/pedroraad/Trabalho-IA-Grupo-2/assets/78119948/70577314-d44b-4b91-a926-cf4aa446e022)
+
+# Como rodar o código
+No diretório raiz, rode o seguinte comando no terminal:
+```bash
+make && ./arq.exe
+```
+
+Caso queira deletar os arquivos **.o**, basta rodar no terminal:
+```bash
+make clean
+```
