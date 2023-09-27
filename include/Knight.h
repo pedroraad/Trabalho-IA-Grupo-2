@@ -2,11 +2,18 @@
 #define KNIGHT_H_INCLUDED
 
 class Knight {
-public:
+private:
     int x, y;
 
-    Knight(int x, int y);
+public:
+
+    Knight(int x = 4, int y = 7);
     ~Knight();
+    int getX();
+    int getY();
+    void setX(int x);
+    void setY(int y);
+    void move();
 };
 
 #endif

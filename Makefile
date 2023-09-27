@@ -12,8 +12,20 @@ objects := $(patsubst %.cpp, $(objdir)/%.o, $(srcfiles))
 
 ################################################################################
 
-# Compiler and linker
-CC = g++
+# Compiler selection based on platform
+UNAME := $(shell uname)
+ifeq ($(UNAME), Linux)
+    CC = g++
+    target := arq
+endif
+ifeq ($(UNAME), Darwin) # macOS
+    CC = clang++
+    target := arq
+endif
+ifeq ($(OS),Windows_NT) # Windows
+    CC = g++
+    target := arq.exe
+endif
 
 # Flags for compiler
 CC_FLAGS = -I./include -g
