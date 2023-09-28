@@ -8,36 +8,43 @@ void clearTerminal(){
 }
 
 int main(){
+    clearTerminal();
     Knight knight;
     int option = 1;
-    do {
+    while (true) {
         cout << "\nMENU =====================" << endl;
         cout << "1. Escolher estado inicial" << endl;
-        cout << "2. Print knight position" << endl;
+        cout << "2. Posição atual do cavalo" << endl;
+        cout << "3. Backtracking" << endl;
         cout << "0. Exit" << endl;
         cout << "=========================" << endl;
         cout << "Option: ";
-        cin >> option;
+        try
+        {
+            cin >> option;
+        }
+        catch(const std::exception& e)
+        {
+            clearTerminal();
+            std::cerr << e.what() << '\n';
+            continue;
+        }
         clearTerminal();
         if (option == 1) {
-            cout << "\nPosição atual do cavalo: " << endl << "x -> " << knight.getX() << endl << "y -> " << knight.getY() << endl << endl;
-            int x, y;
-            try
-            {
-                cout << "Novo x: ";
-                cin >> x;
-                knight.setX(x);
-                cout << "Novo y: ";
-                cin >> y;
-                knight.setY(y);
-            }
-            catch(const std::exception& e)
-            {
-                cout << e.what() << endl;
-            }
+            knight.setPosition();
         }
         else if (option == 2) {
-            cout << "Posição do cavalo: " << knight.getX() << ", " << knight.getY() << endl;
+            knight.printPosition();
         }
-    } while (option != 0);
+        else if (option == 3) {
+            clearTerminal();
+            cout << "Ainda não implementado" << endl;
+        }
+        else if (option == 0) {
+            break;
+        }else {
+            clearTerminal();
+            cout << "Opção inválida" << endl;
+        }
+    }
 }

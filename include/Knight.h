@@ -13,6 +13,8 @@ public:
     int getY();
     void setX(int x);
     void setY(int y);
+    void setPosition();
+    void printPosition();
     void move();
 };
 
