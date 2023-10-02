@@ -10,25 +10,26 @@ void clearTerminal(){
 int main(){
     clearTerminal();
     Knight knight;
-    int option = 1;
+    short int option;
     while (true) {
         cout << "\nMENU =====================" << endl;
         cout << "1. Escolher estado inicial" << endl;
         cout << "2. Posição atual do cavalo" << endl;
         cout << "3. Backtracking" << endl;
-        cout << "0. Exit" << endl;
+        cout << "0. Sair" << endl;
         cout << "=========================" << endl;
-        cout << "Option: ";
-        try
-        {
-            cin >> option;
-        }
-        catch(const std::exception& e)
-        {
+        cout << "Opção: ";
+
+        cin >> option;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(100,'\n');
             clearTerminal();
-            std::cerr << e.what() << '\n';
+            cout << "Opção inválida" << endl;
             continue;
         }
+
         clearTerminal();
         if (option == 1) {
             knight.setPosition();
