@@ -15,7 +15,6 @@ public:
     void setY(int y);
     void setPosition();
     void printPosition();
-    void move();
 };
 
 #endif

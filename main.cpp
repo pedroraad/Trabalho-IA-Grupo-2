@@ -1,5 +1,6 @@
 #include <iostream>
 #include "include/Knight.h"
+#include "include/Algorithms.h"
 
 using namespace std;
 
@@ -39,7 +40,8 @@ int main(){
         }
         else if (option == 3) {
             clearTerminal();
-            cout << "Ainda não implementado" << endl;
+            
+            backtraking(knight.getX(), knight.getY());
         }
         else if (option == 0) {
             break;
