@@ -32,7 +32,6 @@ static vector<int*> auxBacktraking(int x, int y, vector<int*> path, bool board[6
 
 
     if (path.size() == 64) {
-        printBoard(board);
         return path;
     }
     
@@ -68,13 +67,13 @@ static vector<int*> auxBacktraking(int x, int y, vector<int*> path, bool board[6
     return vector<int*>();
 }
 
-static void printBoard(char board[8][8]) {
+static void printBoard(char board[8][8], int previousX = -1, int previousY = -1) {
     cout << "    A   B   C   D   E   F   G   H" << endl;
     cout << "  +---+---+---+---+---+---+---+---+" << endl;
     for (int i = 0; i < 8; i++) {
         cout << 8 - i << " |";
         for (int j = 0; j < 8; j++) {
-            cout << " " << (board[i][j] == 'K' ? "\x1B[32m" : "") << board[i][j] << (board[i][j] == 'K' ? "\x1B[37m" : "") << " |";
+            cout << " " << (board[i][j] == 'K' ? "\x1B[32m\x1B[1m" : (i == previousX && j == previousY ? "\x1B[31m" : "\x1B[94m")) << board[i][j] << "\x1B[0m" << " |";
         }
         cout << " " << 8 - i << endl;
         cout << "  +---+---+---+---+---+---+---+---+" << endl;
@@ -98,20 +97,14 @@ void backtraking(int x, int y) {
     }    
 
     if (path.size() > 0){
-        for (int i = 1; i < path.size(); i++) {
-            pBoard[path[i - 1][0]][path[i - 1][1]] = ':';
+        for (int i = 0; i < path.size(); i++) {
+            if (i > 0) { pBoard[path[i - 1][0]][path[i - 1][1]] = '#';}
             pBoard[path[i][0]][path[i][1]] = 'K';
             cout << "ITERATION " << i << endl;
-            printBoard(pBoard);
+            if (i == 0) {printBoard(pBoard);} else {printBoard(pBoard, path[i - 1][0], path[i - 1][1]);}
             cout << endl;
         }
     } else {
         cout << "NAO ENCONTRADO" << endl;
     }
-
-    
-
-    cout << "[APERTE QUALQUER TECLA PRA CONTINUAR]" << endl;
-    
-    std::cin.get();
 }
