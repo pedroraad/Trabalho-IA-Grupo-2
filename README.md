@@ -19,6 +19,10 @@ A principal limitação deste problema é que a peça usada se move somente em p
 # Como rodar o código
 No diretório raiz, rode o seguinte comando no terminal:
 ```bash
+./run.sh
+```
+ou
+```bash
 make && ./arq.exe
 ```
 
