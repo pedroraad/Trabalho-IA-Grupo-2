@@ -9,6 +9,9 @@ void clearTerminal(){
 }
 
 int main(){
+    breadthFirstSearch(0, 0);    
+
+    /*   
     clearTerminal();
     Knight knight;
     short int option;
@@ -49,4 +52,6 @@ int main(){
             cout << "Opção inválida" << endl;
         }
     }
+
+    */
 }

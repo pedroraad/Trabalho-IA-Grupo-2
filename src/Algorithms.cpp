@@ -1,4 +1,5 @@
 #include "Algorithms.h"
+#include "Moviment.cpp"
 #include <iostream>
 #include <map>
 
@@ -20,6 +21,9 @@ static void printBoard(bool board[64]) {
     }
     cout << "    A   B   C   D   E   F   G   H" << endl;
 }
+
+
+
 
 static vector<int*> auxBacktraking(int x, int y, vector<int*> path, bool board[64]) {
     // printBoard(board);
@@ -107,4 +111,91 @@ void backtraking(int x, int y) {
     } else {
         cout << "NAO ENCONTRADO" << endl;
     }
+}
+
+
+static vector<int> createTable(){
+    int size = 64;
+
+    vector<int> table;
+    
+    table.resize(64, 0);
+
+    return table;
+}
+
+static void printTable(vector<int> table){
+    int counter = 1;
+
+    for(auto cell : table){
+        cout << "|" << cell << "|";
+
+        if(counter % 8 == 0){
+            cout << endl;
+        }
+
+        counter++;
+    }
+}
+
+vector<int> getResultPath(Moviment *mov){
+    vector<int> result;
+
+    result.resize(64);
+
+    Moviment *aux = mov;
+
+    while(aux != nullptr){
+        result.push_back(aux->getArrayPosition());
+
+        aux = mov->getFather();
+    }
+
+
+    for(int i = 0 ; i < result.size() ; i++){
+        cout << "| " << result.at(i) << "| ";
+    }
+
+    cout << endl;
+}
+
+void breadthFirstSearch(int x, int y){
+    vector<int> table = createTable();
+
+    vector<bool> visited;
+    list<Moviment*> queue;
+
+    visited.resize(64,false);
+
+    Moviment* moviment = new Moviment(x,y);
+
+    queue.push_back(moviment);
+
+    int order = 0;
+
+
+    while(!queue.empty()){
+        Moviment* mov = queue.front();
+        queue.pop_front();
+
+        visited[mov->getArrayPosition()] = true;
+
+        if(!table[mov->getArrayPosition()]){
+            order++;
+            table[mov->getArrayPosition()] = order;
+        }
+
+
+        mov->printPosition();
+
+        for(auto moviment : mov->getReachableMoviments()){
+            if(!visited[moviment->getArrayPosition()]){
+                moviment->setFather(mov);
+                queue.push_back(moviment);
+            }
+        }
+    }
+
+
+    //printTable(table);
 }
