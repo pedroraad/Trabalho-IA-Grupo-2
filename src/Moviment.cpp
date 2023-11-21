@@ -40,7 +40,6 @@ public:
 
         this->board = new Board(this->boardOrder);
     }
-
     vector<Moviment *> getReachableMoviments()
     {
         vector<Moviment *> possibleMoviments;
@@ -102,7 +101,7 @@ public:
         // 2 casas para esquerda
         if (this->x - 2 >= 0)
         {
-            int newXPos = this->x + 2;
+            int newXPos = this->x - 2;
 
             // 1 casa para baixo
             if (this->y + 1 <= boardOrder - 1)
