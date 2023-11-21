@@ -197,12 +197,13 @@ void getResultPath(Moviment *mov)
 
 void breadthFirstSearch(int x, int y)
 {
+    const int order = 4;
     bool success = false, failure = false;
 
     list<Moviment *> open;
     list<Moviment *> closed;
 
-    Moviment *moviment = new Moviment(x, y);
+    Moviment *moviment = new Moviment(x, y, order);
 
     open.push_back(moviment);
 
@@ -235,7 +236,7 @@ void breadthFirstSearch(int x, int y)
                 current->board->printVisited();
             }
 
-            if (current->board->getNumberOfVisitedCells() == 64)
+            if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
             }
@@ -257,65 +258,5 @@ void breadthFirstSearch(int x, int y)
             }
         }
         iterations++;
-    }
-}
-
-void depthFirstSearch(int x, int y)
-{
-    bool success = false, failure = false;
-
-    list<Moviment *> open;
-    list<Moviment *> closed;
-
-    Moviment *moviment = new Moviment(x, y);
-
-    open.push_back(moviment);
-
-    int max = 0;
-    int currentState = 0;
-
-    while (!(success || failure))
-    {
-        if (open.empty())
-        {
-            cout << "Fila vazia : falhou " << endl;
-            failure = true;
-        }
-        else
-        {
-            Moviment *current = open.front();
-            open.pop_front();
-
-            current->board->visited[current->getArrayPosition()] = true;
-
-            if (current->board->getNumberOfVisitedCells() > max)
-            {
-                max = current->board->getNumberOfVisitedCells();
-
-                cout << "New max " << max << endl;
-                current->board->printVisited();
-            }
-
-            if (current->board->getNumberOfVisitedCells() == 64)
-            {
-                success = true;
-            }
-
-            else
-            {
-
-                for (Moviment *mov : current->getReachableMoviments())
-                {
-                    // Checa se o próxima celula da lista de alcançaveis ainda não foi visitado
-                    if (!current->board->hasAlreadyVisited(mov->getArrayPosition()))
-                    {
-                        mov->board->setVisited(current->board->getVisited());
-                        mov->setFather(current);
-
-                        open.push_front(mov);
-                    }
-                }
-            }
-        }
     }
 }

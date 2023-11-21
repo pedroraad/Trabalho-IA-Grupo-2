@@ -5,21 +5,23 @@ using namespace std;
 class Board
 {
 private:
-    const int order = 8;
     int boardSize;
+    int order;
 
 public:
     vector<bool> visited;
 
-    Board(vector<bool> visited)
+    Board(vector<bool> visited, int order)
     {
         this->visited = visited;
+        this->order = order;
         this->boardSize = order * order;
     }
 
-    Board()
+    Board(int order)
     {
         this->boardSize = order * order;
+        this->order = order;
         this->visited.resize(this->boardSize, false);
     };
 
