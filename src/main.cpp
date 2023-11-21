@@ -9,7 +9,7 @@ void clearTerminal(){
 }
 
 int main(){
-    breadthFirstSearch(0, 0);    
+    breadthFirstSearch(0, 4);    
 
     /*   
     clearTerminal();

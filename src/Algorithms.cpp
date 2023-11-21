@@ -204,18 +204,63 @@ void breadthFirstSearch(int x, int y)
     vector<bool> visited;
     visited.resize(64, false);
 
-    list<Moviment *> queue;
+    list<Moviment *> open;
+    list<Moviment *> closed;
 
-    Moviment *moviment = new Moviment(0, 0);
+    Moviment *moviment = new Moviment(x, y);
 
-    queue.push_back(moviment);
+    open.push_back(moviment);
 
     int iterations = 0;
 
- 
+    int max = 0;
+
+    while (!(success || failure))
+    {
+        if (open.empty())
+        {
+            cout << "Pilha vazia : falhou " << endl;
+            failure = true;
+        }
+        else
+        {
+            Moviment *current = open.front();
+            open.pop_front();
+
+            current->board->visited[current->getArrayPosition()] = true;
+
+
+
+            if (current->board->getNumberOfVisitedCells() == 64)
+            {
+                success = true;
+            }
+            else
+            {
+                for (Moviment *mov : current->getReachableMoviments())
+                {
+                    // Checa se o próxima celula da lista de alcançaveis ainda não foi visitado
+                    if (!current->board->hasAlreadyVisited(mov->getArrayPosition()))
+                    {
+                        mov->board->setVisited(current->board->getVisited());
+                        mov->setFather(current);
+
+                        open.push_back(mov);
+                    }
+                }
+
+                //closed.push_front(current);
+
+                open.remove_if([current](Moviment *obj)
+                               { return obj->getArrayPosition() == current->getArrayPosition(); });
+            }
+        }
+    }
+
+    /*
     while (!queue.empty())
     {
-     
+
         Moviment *mov = queue.front();
         queue.pop_front();
 
@@ -229,13 +274,13 @@ void breadthFirstSearch(int x, int y)
             break;
         }
 
-      
+
         for (auto moviment : mov->getReachableMoviments())
         {
             if (!mov->board->hasAlreadyVisited(moviment->getArrayPosition()))
             {
                 moviment->setFather(mov);
-                
+
                 moviment->board->setVisited(vector<bool>(mov->board->getVisited()));
                 queue.push_back(moviment);
             }
@@ -246,6 +291,7 @@ void breadthFirstSearch(int x, int y)
 
         iterations++;
     }
+    */
 
     // printTable(table);
 }

@@ -24,6 +24,10 @@ public:
         this->board = new Board();
     }
 
+    ~Moviment(){
+        delete board;
+    }
+
     Moviment(int x, int y, Moviment *father)
     {
         this->x = x;

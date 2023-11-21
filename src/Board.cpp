@@ -6,9 +6,10 @@ class Board
 {
 private:
     vector<int> board;
-    vector<bool> visited;
 
 public:
+    vector<bool> visited;
+
     Board(vector<int> board, vector<bool> visited)
     {
         this->board = board;
@@ -20,6 +21,10 @@ public:
         this->board.resize(64);
         this->visited.resize(64, false);
     };
+
+    ~Board(){
+        visited.resize(0);
+    }
 
     vector<int> getBoard()
     {
