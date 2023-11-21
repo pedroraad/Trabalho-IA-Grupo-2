@@ -11,5 +11,6 @@ using namespace std;
 
 void backtraking(int x, int y);
 void breadthFirstSearch(int x, int y);
+void depthFirstSearch(int x, int y);
 
 #endif

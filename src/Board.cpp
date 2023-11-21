@@ -5,40 +5,32 @@ using namespace std;
 class Board
 {
 private:
-    vector<int> board;
+    const int order = 8;
+    int boardSize;
 
 public:
     vector<bool> visited;
 
-    Board(vector<int> board, vector<bool> visited)
+    Board(vector<bool> visited)
     {
-        this->board = board;
         this->visited = visited;
+        this->boardSize = order * order;
     }
 
     Board()
     {
-        this->board.resize(64);
-        this->visited.resize(64, false);
+        this->boardSize = order * order;
+        this->visited.resize(this->boardSize, false);
     };
 
-    ~Board(){
-        visited.resize(0);
-    }
-
-    vector<int> getBoard()
+    ~Board()
     {
-        return this->board;
-    }
-
-    void setBoard(vector<int> board)
-    {
-        this->board = board;
+        this->visited.resize(0);
     }
 
     bool hasAlreadyVisited(int position)
     {
-        return visited[position];
+        return this->visited[position];
     }
 
     void setPositionVisited(int position)
@@ -60,7 +52,7 @@ public:
     {
         int counter = 0;
 
-        for (bool element : visited)
+        for (bool element : this->visited)
         {
             if (element)
                 counter++;
@@ -79,7 +71,7 @@ public:
         {
             cout << "|" << cell << "|";
 
-            if (counter % 8 == 0)
+            if (counter % order == 0)
             {
                 cout << endl;
             }

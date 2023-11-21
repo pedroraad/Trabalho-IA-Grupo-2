@@ -7,6 +7,8 @@ using namespace std;
 class Moviment
 {
 private:
+    const int boardOrder = 8;
+
     Moviment *father;
 
     int x;
@@ -47,7 +49,7 @@ public:
             int newYPos = this->y - 2;
 
             // 1 casa para direita
-            if (this->x + 1 <= 7)
+            if (this->x + 1 <= boardOrder - 1)
             {
                 possibleMoviments.push_back(new Moviment(newYPos, this->x + 1));
             }
@@ -60,12 +62,12 @@ public:
         }
 
         // 2 casas para baixo
-        if (this->y + 2 <= 7)
+        if (this->y + 2 <= boardOrder -1)
         {
             int newYPos = this->y + 2;
 
             // 1 casa para direita
-            if (this->x + 1 <= 7)
+            if (this->x + 1 <= boardOrder -1)
             {
                 possibleMoviments.push_back(new Moviment(newYPos, this->x + 1));
             }
@@ -78,12 +80,12 @@ public:
         }
 
         // 2 casas para direita
-        if (this->x + 2 <= 7)
+        if (this->x + 2 <= boardOrder - 1)
         {
             int newXPos = this->x + 2;
 
             // 1 casa para baixo
-            if (this->y + 1 <= 7)
+            if (this->y + 1 <= boardOrder -1)
             {
                 possibleMoviments.push_back(new Moviment(this->y + 1, newXPos));
             }
@@ -101,7 +103,7 @@ public:
             int newXPos = this->x + 2;
 
             // 1 casa para baixo
-            if (this->y + 1 <= 7)
+            if (this->y + 1 <= boardOrder - 1)
             {
                 possibleMoviments.push_back(new Moviment(this->y + 1, newXPos));
             }
