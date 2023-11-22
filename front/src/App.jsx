@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes  } from "react-router-dom";
-import Bfs from "./Bfs";
-import Dfs from './Dfs';
+import Bfs from "./BreadthFirstSearch";
+import Dfs from './DepthFirstSearch';
 
 const App = () => {
   return (
