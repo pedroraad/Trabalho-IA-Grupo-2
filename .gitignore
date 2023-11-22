@@ -33,3 +33,5 @@
 
 # Diretories
 .vscode/
+
+node_modules
