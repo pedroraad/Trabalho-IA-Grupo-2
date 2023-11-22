@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Knight.h"
 #include "Algorithms.h"
+#include "Performance.h"
 
 using namespace std;
 
@@ -11,7 +12,7 @@ void clearTerminal()
 
 int main()
 {
-
+    Performance perfomance;
     clearTerminal();
     Knight knight;
     short int option;
@@ -52,7 +53,10 @@ int main()
         else if (option == 3)
         {
             clearTerminal();
+
+         
             backtraking(knight.getX(), knight.getY());
+          
         }
 
         else if (option == 4)
@@ -60,7 +64,9 @@ int main()
             cout << "Digite a ordem do tabuleiro: " << endl;
             cin >> order;
 
+            perfomance.start();
             breadthFirstSearch(knight.getX(), knight.getY(), order);
+            perfomance.end();
         }
 
         else if (option == 5)
@@ -68,7 +74,9 @@ int main()
             cout << "Digite a ordem do tabuleiro: " << endl;
             cin >> order;
 
+            perfomance.start();
             depthFirstSearch(knight.getX(), knight.getY(), order);
+            perfomance.end();
         }
         else if (option == 0)
         {

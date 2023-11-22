@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include <algorithm>
+#include <sstream>
 #include "Board.cpp"
 
 using namespace std;
@@ -172,19 +174,42 @@ public:
 
         cout << "---------------------------------------------" << endl;
 
-        for (auto cell : table)
-        {
-            cout << "| " << cell << " |";
+        stringstream json;
 
-            if (counter % boardOrder == 0)
+        std::ofstream file("./front/src/result.json");
+
+        if (file.is_open())
+        {
+            json << "[[";
+
+            for (auto cell : table)
             {
-                cout << endl;
+                cout << "| " << cell << " |";
+                json << cell;
+
+                if (counter < table.size() && counter % boardOrder != 0)
+                    json << ",";
+
+                if (counter % boardOrder == 0)
+                {
+                    json << "]";
+                    cout << endl;
+
+                    if (counter < table.size() - 1)
+                        json << ",[";
+                }
+
+                counter++;
             }
 
-            counter++;
-        }
+            json << "]";
 
-        cout << "-----------------------------------------------" << endl;
+            cout << "-----------------------------------------------" << endl;
+
+            file << json.str();
+
+            file.close();
+        }
     }
 
     void setBoard(Board *board)
