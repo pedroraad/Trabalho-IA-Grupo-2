@@ -121,7 +121,7 @@ public:
 
     int getArrayPosition()
     {
-        return y * 8 + x;
+        return y * boardOrder + x;
     }
 
     void printPosition()
@@ -141,12 +141,48 @@ public:
 
     void setFather(Moviment *mov)
     {
-        this->father = father;
+        this->father = mov;
     }
 
     Moviment *getFather()
     {
         return this->father;
+    }
+
+    void printSolution()
+    {
+        Moviment *aux = this;
+        int posCounter = (boardOrder * boardOrder) - 1;
+
+        vector<int> table;
+        table.resize(boardOrder * boardOrder);
+
+        while (aux != nullptr)
+        {
+            table[aux->getArrayPosition()] = posCounter;
+
+            aux = aux->getFather();
+
+            posCounter--;
+        }
+
+        int counter = 1;
+
+        cout << "---------------------------------------------" << endl;
+
+        for (auto cell : table)
+        {
+            cout << "| " << cell << " |";
+
+            if (counter % boardOrder == 0)
+            {
+                cout << endl;
+            }
+
+            counter++;
+        }
+
+        cout << "-----------------------------------------------" << endl;
     }
 
     void setBoard(Board *board)

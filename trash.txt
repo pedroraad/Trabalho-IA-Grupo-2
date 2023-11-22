@@ -1,0 +1,41 @@
+ for (Moviment *mov : open)
+            {
+
+                if (mov->getFather() != nullptr && current->getFather() != nullptr)
+                {
+
+                    if (mov->getFather()->getArrayPosition() == current->getFather()->getArrayPosition())
+                    {
+
+                        if (mov->getArrayPosition() == current->getArrayPosition())
+                        {
+                            open.remove(mov);
+                        }
+                    }
+                }
+                else
+                {
+                    cout << "Sem pai " << endl;
+                }
+            }
+
+
+
+                        for (Moviment *elem : open)
+                        {
+                            if (mov->getFather() != nullptr && elem->getFather() != nullptr)
+                            {
+
+                                if (mov->getFather()->getArrayPosition() == elem->getFather()->getArrayPosition())
+                                {
+
+                                    if (mov->getArrayPosition() == elem->getArrayPosition())
+                                    {
+                                        hasInOpenList = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!hasInOpenList)

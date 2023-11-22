@@ -197,7 +197,7 @@ void getResultPath(Moviment *mov)
 
 void breadthFirstSearch(int x, int y)
 {
-    const int order = 4;
+    const int order = 5;
     bool success = false, failure = false;
 
     list<Moviment *> open;
@@ -226,19 +226,11 @@ void breadthFirstSearch(int x, int y)
 
             current->board->visited[current->getArrayPosition()] = true;
 
-            if (current->board->getNumberOfVisitedCells() > max)
-            {
-                max = current->board->getNumberOfVisitedCells();
-
-                cout << "New max " << max << endl;
-                cout << "Iterations " << iterations << endl;
-
-                current->board->printVisited();
-            }
-
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
+                cout << "Solução encontrada : " << endl;
+                current->printSolution();
             }
 
             else
@@ -257,6 +249,81 @@ void breadthFirstSearch(int x, int y)
                 }
             }
         }
+
+        iterations++;
+    }
+}
+
+void depthFirstSearch(int x, int y)
+{
+    const int order = 4;
+    bool success = false, failure = false;
+
+    list<Moviment *> open;
+    list<Moviment *> closed;
+
+    Moviment *moviment = new Moviment(x, y, order);
+
+    open.push_front(moviment);
+
+    int max = 0;
+    int currentState = 0;
+
+    int iterations = 0;
+
+    while (!(success || failure))
+    {
+        if (open.empty())
+        {
+            cout << "Fila vazia : falhou " << endl;
+            failure = true;
+        }
+        else
+        {
+            Moviment *current = open.front();
+            open.pop_front();
+
+            current->board->visited[current->getArrayPosition()] = true;
+
+            int repetidos = 0;
+
+            if (current->board->getNumberOfVisitedCells() > max)
+            {
+                max = current->board->getNumberOfVisitedCells();
+
+                cout << "Maxium : " << max << endl;
+
+                current->printReachableMoviments();
+                current->board->printVisited();
+            }
+
+            // current->board->printVisited();
+
+            if (current->board->getNumberOfVisitedCells() == order * order)
+            {
+                success = true;
+            }
+
+            else
+            {
+
+                for (Moviment *mov : current->getReachableMoviments())
+                {
+                    // Checa se o próxima celula da lista de alcançaveis ainda não foi visitado
+                    if (!current->board->hasAlreadyVisited(mov->getArrayPosition()))
+                    {
+
+                        mov->board->setVisited(current->board->getVisited());
+                        mov->setFather(current);
+
+                        bool hasInOpenList = false;
+
+                        open.push_front(mov);
+                    }
+                }
+            }
+        }
+
         iterations++;
     }
 }

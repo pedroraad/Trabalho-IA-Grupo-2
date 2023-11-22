@@ -83,4 +83,10 @@ public:
 
         cout << "-----------------------------------------------" << endl;
     }
+
+    vector<bool> clone(const std::vector<bool> &original)
+    {
+
+        return std::vector<bool>(original.begin(), original.end());
+    }
 };
