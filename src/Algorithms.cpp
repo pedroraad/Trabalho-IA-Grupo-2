@@ -195,16 +195,15 @@ void getResultPath(Moviment *mov)
     cout << endl;
 }
 
-void breadthFirstSearch(int x, int y)
+void breadthFirstSearch(int x, int y, int order)
 {
-    const int order = 5;
+
     bool success = false, failure = false;
 
     list<Moviment *> open;
     list<Moviment *> closed;
 
     Moviment *moviment = new Moviment(x, y, order);
-
 
     open.push_back(moviment);
 
@@ -255,9 +254,9 @@ void breadthFirstSearch(int x, int y)
     }
 }
 
-void depthFirstSearch(int x, int y)
+void depthFirstSearch(int x, int y, int order)
 {
-    const int order = 4;
+
     bool success = false, failure = false;
 
     list<Moviment *> open;
@@ -288,21 +287,11 @@ void depthFirstSearch(int x, int y)
 
             int repetidos = 0;
 
-            if (current->board->getNumberOfVisitedCells() > max)
-            {
-                max = current->board->getNumberOfVisitedCells();
-
-                cout << "Maxium : " << max << endl;
-
-                current->printReachableMoviments();
-                current->board->printVisited();
-            }
-
-            // current->board->printVisited();
-
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
+                cout << "Solução encontrada" << endl;
+                current->printSolution();
             }
 
             else
@@ -316,8 +305,6 @@ void depthFirstSearch(int x, int y)
 
                         mov->board->setVisited(current->board->getVisited());
                         mov->setFather(current);
-
-                        bool hasInOpenList = false;
 
                         open.push_front(mov);
                     }
