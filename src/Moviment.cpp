@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "Board.cpp"
 
 using namespace std;
@@ -43,6 +44,31 @@ public:
     vector<Moviment *> getReachableMoviments()
     {
         vector<Moviment *> possibleMoviments;
+        auto addIfValid = [&](int x, int y)
+        {
+            if (x >= 0 && x < boardOrder && y >= 0 && y < boardOrder)
+            {
+                Moviment *newMove = new Moviment(x, y, boardOrder);
+
+                // Verifica se o movimento já está na lista
+                auto it = std::find_if(possibleMoviments.begin(), possibleMoviments.end(),
+                                       [newMove](Moviment *existingMove)
+                                       {
+                                           return existingMove->x == newMove->x &&
+                                                  existingMove->y == newMove->y;
+                                       });
+
+                // Adiciona à lista apenas se não estiver presente
+                if (it == possibleMoviments.end())
+                {
+                    possibleMoviments.push_back(newMove);
+                }
+                else
+                {
+                    delete newMove; // Libera a memória alocada para o movimento duplicado
+                }
+            }
+        };
 
         // 2 casas para cima
         if (this->y - 2 >= 0)
@@ -50,16 +76,10 @@ public:
             int newYPos = this->y - 2;
 
             // 1 casa para direita
-            if (this->x + 1 <= boardOrder - 1)
-            {
-                possibleMoviments.push_back(new Moviment(newYPos, this->x + 1, this->boardOrder));
-            }
+            addIfValid(this->x + 1, newYPos);
 
             // 1 casa para esquerda
-            if (this->x - 1 >= 0)
-            {
-                possibleMoviments.push_back(new Moviment(newYPos, this->x - 1, this->boardOrder));
-            }
+            addIfValid(this->x - 1, newYPos);
         }
 
         // 2 casas para baixo
@@ -68,16 +88,10 @@ public:
             int newYPos = this->y + 2;
 
             // 1 casa para direita
-            if (this->x + 1 <= boardOrder - 1)
-            {
-                possibleMoviments.push_back(new Moviment(newYPos, this->x + 1, this->boardOrder));
-            }
+            addIfValid(this->x + 1, newYPos);
 
             // 1 casa para esquerda
-            if (this->x - 1 >= 0)
-            {
-                possibleMoviments.push_back(new Moviment(newYPos, this->x - 1, this->boardOrder));
-            }
+            addIfValid(this->x - 1, newYPos);
         }
 
         // 2 casas para direita
@@ -86,16 +100,10 @@ public:
             int newXPos = this->x + 2;
 
             // 1 casa para baixo
-            if (this->y + 1 <= boardOrder - 1)
-            {
-                possibleMoviments.push_back(new Moviment(this->y + 1, newXPos, this->boardOrder));
-            }
+            addIfValid(newXPos, this->y + 1);
 
             // 1 casa para cima
-            if (this->y - 1 >= 0)
-            {
-                possibleMoviments.push_back(new Moviment(this->y - 1, newXPos, this->boardOrder));
-            }
+            addIfValid(newXPos, this->y - 1);
         }
 
         // 2 casas para esquerda
@@ -104,16 +112,10 @@ public:
             int newXPos = this->x - 2;
 
             // 1 casa para baixo
-            if (this->y + 1 <= boardOrder - 1)
-            {
-                possibleMoviments.push_back(new Moviment(this->y + 1, newXPos, this->boardOrder));
-            }
+            addIfValid(newXPos, this->y + 1);
 
             // 1 casa para cima
-            if (this->y - 1 >= 0)
-            {
-                possibleMoviments.push_back(new Moviment(this->y - 1, newXPos, this->boardOrder));
-            }
+            addIfValid(newXPos, this->y - 1);
         }
 
         return possibleMoviments;

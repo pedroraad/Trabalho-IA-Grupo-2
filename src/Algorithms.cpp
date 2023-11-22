@@ -205,6 +205,7 @@ void breadthFirstSearch(int x, int y)
 
     Moviment *moviment = new Moviment(x, y, order);
 
+
     open.push_back(moviment);
 
     int max = 0;
