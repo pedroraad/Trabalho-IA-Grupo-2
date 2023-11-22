@@ -1,38 +1,15 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import tableState from "./result.json";
-import Chessboard from "./Chessboard";
+import { BrowserRouter as Router, Route, Routes  } from "react-router-dom";
+import Bfs from "./Bfs";
+import Dfs from './Dfs';
 
 const App = () => {
-  const [index, setIndex] = useState(0);
-  const [currentBoardState, setCurrentBoardState] = useState();
-
-  const createBasicState = () => {
-    const board = [];
-
-    const currentState = tableState[`${index}`];
-
-    for (let i = 0; i < currentState.length; i++) {
-      board.push(currentState[i]);
-    }
-
-    return board;
-  };
-
-  const handleNewBoardState = () => {
-    setIndex((prevState) => prevState + 1);
-    setCurrentBoardState(createBasicState());
-  };
-
-  useEffect(() => {
-    setCurrentBoardState(createBasicState());
-  }, []);
-
   return (
-    <div>
-      <Chessboard boardState={currentBoardState} />
-      <button onClick={handleNewBoardState}>Proximo Estado</button>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" Component={Bfs} />
+        <Route exact path="/dfs" Component={Dfs} />
+      </Routes>
+    </Router>
   );
 };
 
