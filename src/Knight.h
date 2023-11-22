@@ -7,7 +7,7 @@ private:
 
 public:
 
-    Knight(int x = 4, int y = 7);
+    Knight(int x = 0, int y = 0);
     ~Knight();
     int getX();
     int getY();
