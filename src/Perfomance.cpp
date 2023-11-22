@@ -12,7 +12,7 @@ void Performance::start()
     this->startTime = clock();
 }
 
-std::chrono::duration<double> Performance::end()
+void Performance::end()
 {
     this->finalTime = clock();
 

@@ -18,7 +18,7 @@ public:
     ~Performance();
 
     void start();
-    std::chrono::duration<double> end();
+    void end();
 };
 
 #endif

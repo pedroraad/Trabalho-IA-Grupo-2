@@ -172,6 +172,13 @@ static void printTable(vector<int> table)
     }
 }
 
+void printResults(Moviment *winner, int iterations)
+{
+    cout << "Solução encontrada : " << endl;
+    winner->printSolution();
+    cout << "Estados explorados: " << iterations << endl;
+}
+
 void getResultPath(Moviment *mov)
 {
     vector<int> result;
@@ -201,7 +208,6 @@ void breadthFirstSearch(int x, int y, int order)
     bool success = false, failure = false;
 
     list<Moviment *> open;
-    list<Moviment *> closed;
 
     Moviment *moviment = new Moviment(x, y, order);
 
@@ -229,10 +235,8 @@ void breadthFirstSearch(int x, int y, int order)
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
-                cout << "Solução encontrada : " << endl;
-                current->printSolution();
+                printResults(current, iterations + 1);
             }
-
             else
             {
 
@@ -260,7 +264,6 @@ void depthFirstSearch(int x, int y, int order)
     bool success = false, failure = false;
 
     list<Moviment *> open;
-    list<Moviment *> closed;
 
     Moviment *moviment = new Moviment(x, y, order);
 
@@ -285,13 +288,10 @@ void depthFirstSearch(int x, int y, int order)
 
             current->board->visited[current->getArrayPosition()] = true;
 
-            int repetidos = 0;
-
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
-                cout << "Solução encontrada" << endl;
-                current->printSolution();
+                printResults(current, iterations + 1);
             }
 
             else

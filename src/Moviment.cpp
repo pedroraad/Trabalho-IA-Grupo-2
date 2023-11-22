@@ -3,6 +3,7 @@
 #include <fstream>
 #include <algorithm>
 #include <sstream>
+#include "Util.cpp"
 #include "Board.cpp"
 
 using namespace std;
@@ -153,27 +154,10 @@ public:
         return this->father;
     }
 
-    std::string vectorToJsonString(const std::vector<int> &myVector)
-    {
-        std::string jsonString = "[";
-
-        for (size_t i = 0; i < myVector.size(); ++i)
-        {
-            jsonString += std::to_string(myVector[i]);
-
-            // Add a comma if not the last element
-            if (i < myVector.size() - 1)
-            {
-                jsonString += ",";
-            }
-        }
-
-        jsonString += "]";
-        return jsonString;
-    }
-
     void printSolution()
     {
+        Util util;
+
         Moviment *aux = this;
         int posCounter = (boardOrder * boardOrder) - 1;
 
@@ -193,7 +177,6 @@ public:
             aux = aux->getFather();
 
             states[auxCounter].resize(boardOrder * boardOrder, -1);
-
             states[auxCounter] = table;
 
             auxCounter++;
@@ -204,43 +187,21 @@ public:
 
         cout << "---------------------------------------------" << endl;
 
-        std::ofstream file("./front/src/result.json");
-
-        if (file.is_open())
+        for (auto cell : table)
         {
+            cout << "| " << cell << " |";
 
-            for (auto cell : table)
+            if (counter % boardOrder == 0)
             {
-                cout << "| " << cell << " |";
-
-                if (counter % boardOrder == 0)
-                {
-                    cout << endl;
-                }
-
-                counter++;
+                cout << endl;
             }
 
-            file << "{\n";
-
-            for (int i = 0 ; i < states.size() ; i++)
-            {
-                file << "\"" << i << "\":";
-                string json = vectorToJsonString(states[i]);
-
-                if(i < states.size() - 1){
-                    json += ",\n";
-                }
-
-                file << json;
-            }
-
-            cout << "-----------------------------------------------" << endl;
-
-            file << "\n}\n";
-
-            file.close();
+            counter++;
         }
+
+        cout << "-----------------------------------------------" << endl;
+
+        util.createJsonObjectOfVectors(states, "result.json");
     }
 
     void setBoard(Board *board)
