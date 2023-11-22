@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+button{
+  margin-top: 10px;
+}
+
 .chessboard {
   display: flex;
   flex-direction: column;
@@ -24,7 +28,7 @@
   font-weight: bold;
   border-right: 1px solid;
   border-bottom: 1px  solid;
-  
+
 
 }
 

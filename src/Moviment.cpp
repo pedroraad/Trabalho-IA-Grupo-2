@@ -153,13 +153,38 @@ public:
         return this->father;
     }
 
+    std::string vectorToJsonString(const std::vector<int> &myVector)
+    {
+        std::string jsonString = "[";
+
+        for (size_t i = 0; i < myVector.size(); ++i)
+        {
+            jsonString += std::to_string(myVector[i]);
+
+            // Add a comma if not the last element
+            if (i < myVector.size() - 1)
+            {
+                jsonString += ",";
+            }
+        }
+
+        jsonString += "]";
+        return jsonString;
+    }
+
     void printSolution()
     {
         Moviment *aux = this;
         int posCounter = (boardOrder * boardOrder) - 1;
 
         vector<int> table;
-        table.resize(boardOrder * boardOrder);
+        table.resize(boardOrder * boardOrder, -1);
+
+        vector<vector<int>> states;
+
+        states.resize(boardOrder * boardOrder);
+
+        int auxCounter = 0;
 
         while (aux != nullptr)
         {
@@ -167,6 +192,11 @@ public:
 
             aux = aux->getFather();
 
+            states[auxCounter].resize(boardOrder * boardOrder, -1);
+
+            states[auxCounter] = table;
+
+            auxCounter++;
             posCounter--;
         }
 
@@ -174,39 +204,40 @@ public:
 
         cout << "---------------------------------------------" << endl;
 
-        stringstream json;
-
         std::ofstream file("./front/src/result.json");
 
         if (file.is_open())
         {
-            json << "[[";
 
             for (auto cell : table)
             {
                 cout << "| " << cell << " |";
-                json << cell;
-
-                if (counter < table.size() && counter % boardOrder != 0)
-                    json << ",";
 
                 if (counter % boardOrder == 0)
                 {
-                    json << "]";
                     cout << endl;
-
-                    if (counter < table.size() - 1)
-                        json << ",[";
                 }
 
                 counter++;
             }
 
-            json << "]";
+            file << "{\n";
+
+            for (int i = 0 ; i < states.size() ; i++)
+            {
+                file << "\"" << i << "\":";
+                string json = vectorToJsonString(states[i]);
+
+                if(i < states.size() - 1){
+                    json += ",\n";
+                }
+
+                file << json;
+            }
 
             cout << "-----------------------------------------------" << endl;
 
-            file << json.str();
+            file << "\n}\n";
 
             file.close();
         }

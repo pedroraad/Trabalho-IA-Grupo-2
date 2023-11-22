@@ -1,38 +1,37 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import tableState from './result.json';
+import tableState from "./result.json";
 import Chessboard from "./Chessboard";
 
 const App = () => {
-  const [currentBoardState, setCurrentBoardState] =
-    useState();
+  const [index, setIndex] = useState(0);
+  const [currentBoardState, setCurrentBoardState] = useState();
 
   const createBasicState = () => {
     const board = [];
 
-    for(let i = 0 ; i < 5 ; i++){
-      board[i] = [];
+    const currentState = tableState[`${index}`];
 
-      for(let j = 0 ; j < 5 ; j ++){
-        board[i].push(tableState[i][j]);
-      }
+    for (let i = 0; i < currentState.length; i++) {
+      board.push(currentState[i]);
     }
 
     return board;
-  }
+  };
 
   const handleNewBoardState = () => {
+    setIndex((prevState) => prevState + 1);
     setCurrentBoardState(createBasicState());
   };
 
   useEffect(() => {
     setCurrentBoardState(createBasicState());
-  },[])
+  }, []);
 
   return (
     <div>
       <Chessboard boardState={currentBoardState} />
-      <button onClick={handleNewBoardState}>Novo Estado</button>
+      <button onClick={handleNewBoardState}>Proximo Estado</button>
     </div>
   );
 };
