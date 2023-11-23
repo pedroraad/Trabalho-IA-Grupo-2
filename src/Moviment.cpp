@@ -129,6 +129,10 @@ public:
         return y * boardOrder + x;
     }
 
+    string getPosition(){
+        return to_string(y) + to_string(x);
+    }
+
     void printPosition()
     {
         cout << y << x << endl;

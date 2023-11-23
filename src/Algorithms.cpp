@@ -202,19 +202,39 @@ void getResultPath(Moviment *mov)
     cout << endl;
 }
 
+void closedListToViz(list<Moviment *> closed)
+{
+    ofstream file("result.dot");
+    stringstream stream;
+
+    if (file.is_open())
+    {
+
+        stream << "graph G {\n";
+
+        for (Moviment *mov : closed)
+        {
+            if (mov->getFather() != nullptr)
+                stream << mov->getFather()->getPosition() << "--" << mov->getPosition() << ";\n";
+        }
+
+        stream << "\n}";
+    }
+
+    file << stream.str();
+}
+
 void breadthFirstSearch(int x, int y, int order)
 {
 
     bool success = false, failure = false;
 
     list<Moviment *> open;
+    list<Moviment *> closed;
 
     Moviment *moviment = new Moviment(x, y, order);
 
     open.push_back(moviment);
-
-    int max = 0;
-    int currentState = 0;
 
     int iterations = 0;
 
@@ -231,6 +251,9 @@ void breadthFirstSearch(int x, int y, int order)
             open.pop_front();
 
             current->board->visited[current->getArrayPosition()] = true;
+
+            if (iterations == 20)
+                closedListToViz(closed);
 
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
@@ -252,6 +275,8 @@ void breadthFirstSearch(int x, int y, int order)
                     }
                 }
             }
+
+            closed.push_back(current);
         }
 
         iterations++;
@@ -264,13 +289,10 @@ void depthFirstSearch(int x, int y, int order)
     bool success = false, failure = false;
 
     list<Moviment *> open;
+    list<Moviment *> closed;
 
     Moviment *moviment = new Moviment(x, y, order);
-
     open.push_front(moviment);
-
-    int max = 0;
-    int currentState = 0;
 
     int iterations = 0;
 
@@ -294,6 +316,9 @@ void depthFirstSearch(int x, int y, int order)
                 printResults(current, iterations + 1);
             }
 
+            if (iterations == 20)
+                closedListToViz(closed);
+
             else
             {
 
@@ -310,6 +335,8 @@ void depthFirstSearch(int x, int y, int order)
                     }
                 }
             }
+
+            closed.push_back(current);
         }
 
         iterations++;
