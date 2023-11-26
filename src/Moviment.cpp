@@ -27,7 +27,6 @@ public:
         this->father = nullptr;
 
         this->boardOrder = boardOrder;
-
         this->board = new Board(boardOrder);
     }
 
@@ -47,28 +46,32 @@ public:
     vector<Moviment *> getReachableMoviments()
     {
         vector<Moviment *> possibleMoviments;
+
         auto addIfValid = [&](int x, int y)
         {
             if (x >= 0 && x < boardOrder && y >= 0 && y < boardOrder)
             {
                 Moviment *newMove = new Moviment(x, y, boardOrder);
 
-                // Verifica se o movimento já está na lista
-                auto it = std::find_if(possibleMoviments.begin(), possibleMoviments.end(),
-                                       [newMove](Moviment *existingMove)
-                                       {
-                                           return existingMove->x == newMove->x &&
-                                                  existingMove->y == newMove->y;
-                                       });
+                if (!this->board->visited[newMove->getArrayPosition()])
+                {
+                    // Verifica se o movimento já está na lista
+                    auto it = std::find_if(possibleMoviments.begin(), possibleMoviments.end(),
+                                           [newMove](Moviment *existingMove)
+                                           {
+                                               return existingMove->x == newMove->x &&
+                                                      existingMove->y == newMove->y;
+                                           });
 
-                // Adiciona à lista apenas se não estiver presente
-                if (it == possibleMoviments.end())
-                {
-                    possibleMoviments.push_back(newMove);
-                }
-                else
-                {
-                    delete newMove; // Libera a memória alocada para o movimento duplicado
+                    if (it == possibleMoviments.end())
+                    {
+                        newMove->setFather(this);
+                        possibleMoviments.push_back(newMove);
+                    }
+                    else
+                    {
+                        delete newMove; // Libera a memória alocada para o movimento duplicado
+                    }
                 }
             }
         };
@@ -129,7 +132,8 @@ public:
         return y * boardOrder + x;
     }
 
-    string getPosition(){
+    string getPosition()
+    {
         return to_string(y) + to_string(x);
     }
 

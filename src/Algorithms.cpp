@@ -283,6 +283,141 @@ void breadthFirstSearch(int x, int y, int order)
     }
 }
 
+int getNumberOfVisitedCells(vector<bool> visited)
+{
+    int counter = 0;
+
+    for (bool element : visited)
+    {
+        if (element)
+            counter++;
+    }
+
+    return counter;
+}
+
+// void greedySearch(int x, int y, int order)
+// {
+
+//     bool success = false, failure = false;
+
+//     list<Moviment *> open;
+
+//     vector<bool> visited;
+//     visited.resize(64, false);
+
+//     Moviment *moviment = new Moviment(x, y, order);
+
+//     open.push_back(moviment);
+
+//     int iterations = 0;
+
+//     while (!(success || failure))
+//     {
+//         if (open.empty())
+//         {
+//             cout << "Fila vazia : falhou " << endl;
+//             failure = true;
+//         }
+//         else
+//         {
+//             Moviment *current = open.front();
+//             open.pop_front();
+
+//             visited[current->getArrayPosition()] = true;
+
+//             int visitedCells = getNumberOfVisitedCells(visited);
+
+//             cout << "Visitadas " << visitedCells << endl;
+
+//             if (visitedCells == order * order)
+//             {
+//                 success = true;
+//                 printResults(current, iterations + 1);
+//             }
+
+//             else
+//             {
+//                 int minNumberOfMoviments = 0;
+//                 Moviment *minMoviment = new Moviment(0, 0, order);
+
+//                 for (Moviment *mov : current->getReachableMoviments())
+//                 {
+//                     // Checa se o próxima celula da lista de alcançaveis ainda não foi visitado
+//                     if (!visited[mov->getArrayPosition()])
+//                     {
+//                         mov->board->setVisited(visited);
+//                         mov->setFather(current);
+
+//                         int validMoviments = 0;
+
+//                         for (Moviment *childMov : mov->getReachableMoviments())
+//                         {
+//                             bool isVisited = visited[childMov->getArrayPosition()];
+
+//                             if (!isVisited)
+//                                 validMoviments++;
+
+//                             if (validMoviments < minNumberOfMoviments)
+//                             {
+//                                 minNumberOfMoviments = validMoviments;
+//                                 minMoviment = childMov;
+//                             }
+//                         }
+//                     }
+//                 }
+
+//                 open.push_back(minMoviment);
+//             }
+//         }
+
+//         iterations++;
+//     }
+// }
+
+void backtracking(int x, int y, int order)
+{
+    bool success = false;
+    bool failure = false;
+    Moviment *current = new Moviment(x, y, order);
+
+    while (!(success || failure))
+    {
+
+        current->board->visited[current->getArrayPosition()] = true;
+
+        if (current->board->getNumberOfVisitedCells() == order * order)
+            success = true;
+
+        vector<Moviment *> validMoviments = current->getReachableMoviments();
+
+        if (validMoviments.size() > 0)
+        {
+            Moviment *next = validMoviments[0];
+            next->setBoard(current->board);
+            current = next;
+        }
+        else
+        {
+            if (current->getFather() != nullptr)
+            {
+                Moviment *next = current->getFather();
+                next->board->visited[current->getArrayPosition()] = false;
+                current = next;
+            }
+
+            else
+                failure = true;
+        }
+    }
+
+    if (success)
+        current->printSolution();
+
+    else
+        cout << "Solução não encontrada" << endl;
+}
+
 void depthFirstSearch(int x, int y, int order)
 {
 
