@@ -375,47 +375,89 @@ int getNumberOfVisitedCells(vector<bool> visited)
 //     }
 // }
 
-void backtracking(int x, int y, int order)
+// void backtracking(int x, int y, int order)
+// {
+//     bool success = false;
+//     bool failure = false;
+//     Moviment *current = new Moviment(x, y, order);
+
+//     while (!(success || failure))
+//     {
+
+//         current->board->visited[current->getArrayPosition()] = true;
+
+//         if (current->board->getNumberOfVisitedCells() == order * order)
+//             success = true;
+
+//         vector<Moviment *> validMoviments = current->getReachableMoviments();
+
+//         if (validMoviments.size() > 0)
+//         {
+//             Moviment *next = validMoviments[0];
+//             next->setBoard(current->board);
+//             current = next;
+//         }
+//         else
+//         {
+//             if (current->getFather() != nullptr)
+//             {
+//                 current->board->visited[current->getArrayPosition()] = false;
+//                 Moviment *next = current->getFather();
+
+//                 current = next;
+//             }
+
+//             else
+//                 failure = true;
+//         }
+//     }
+
+//     if (success)
+//         current->printSolution();
+
+//     else
+//         cout << "Solução não encontrada" << endl;
+// }
+
+bool solveBacktracking(Moviment *current, int order)
 {
-    bool success = false;
-    bool failure = false;
-    Moviment *current = new Moviment(x, y, order);
+    current->board->visited[current->getArrayPosition()] = true;
 
-    while (!(success || failure))
+    if (current->board->getNumberOfVisitedCells() == order * order)
     {
+        current->printSolution();
+        return true;
+    }
 
-        current->board->visited[current->getArrayPosition()] = true;
+    //cout << "Solucionando... " << current->board->getNumberOfVisitedCells() << endl;
 
-        if (current->board->getNumberOfVisitedCells() == order * order)
-            success = true;
+    vector<Moviment *> validMoviments = current->getReachableMoviments();
 
-        vector<Moviment *> validMoviments = current->getReachableMoviments();
-
-        if (validMoviments.size() > 0)
+    for (Moviment *validMoviment : validMoviments)
+    {
+        validMoviment->setBoard(current->board);
+        if (solveBacktracking(validMoviment, order))
         {
-            Moviment *next = validMoviments[0];
-            next->setBoard(current->board);
-            current = next;
-        }
-        else
-        {
-            if (current->getFather() != nullptr)
-            {
-                Moviment *next = current->getFather();
-                next->board->visited[current->getArrayPosition()] = false;
-                current = next;
-            }
-
-            else
-                failure = true;
+            return true;
         }
     }
 
-    if (success)
-        current->printSolution();
+    current->board->visited[current->getArrayPosition()] = false;
+    return false;
+}
 
+void backtracking(int x, int y, int order)
+{
+    Moviment *start = new Moviment(x, y, order);
+
+    if (solveBacktracking(start, order))
+    {
+        cout << "Encontrado" << endl;
+    }
     else
-        cout << "Solução não encontrada" << endl;
+    {
+        cout << "Não encontrado" << endl;
+    }
 }
 
 void depthFirstSearch(int x, int y, int order)

@@ -12,7 +12,7 @@ void clearTerminal()
 
 int main()
 {
-    backtracking(0,0,4);
+    backtracking(0,0,5);
 
     // Performance perfomance;
     // clearTerminal();
