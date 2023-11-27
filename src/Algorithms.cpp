@@ -5,9 +5,6 @@
 
 using namespace std;
 
-std::map<int, string> Xs = {{0, "A"}, {1, "B"}, {2, "C"}, {3, "D"}, {4, "E"}, {5, "F"}, {6, "G"}, {7, "H"}};
-std::map<int, string> Ys = {{0, "8"}, {1, "7"}, {2, "6"}, {3, "5"}, {4, "4"}, {5, "3"}, {6, "2"}, {7, "1"}};
-
 static void printBoard(bool board[64])
 {
     cout << "    A   B   C   D   E   F   G   H" << endl;
@@ -23,62 +20,6 @@ static void printBoard(bool board[64])
         cout << "  +---+---+---+---+---+---+---+---+" << endl;
     }
     cout << "    A   B   C   D   E   F   G   H" << endl;
-}
-
-static vector<int *> auxBacktraking(int x, int y, vector<int *> path, bool board[64])
-{
-    // printBoard(board);
-    // char a;
-    // cout << path.size() << endl;
-    // cout << "position: " + Ys[x] + Xs[y] << endl;
-    // if (path.size() > 45) {
-    //     std::cin >> a;
-    // }
-
-    if (path.size() == 64)
-    {
-        return path;
-    }
-
-    for (int i = -2; i <= 2; i++)
-    {
-        if (i == 0)
-        {
-            continue;
-        }
-        int j = 3 - abs(i);
-        if (x + i >= 0 && x + i < 8)
-        {
-            if (y + j >= 0 && y + j < 8)
-            {
-                if (board[x + i + (y + j) * 8] == false)
-                {
-                    board[x + i + (y + j) * 8] = new bool[true];
-                    path.push_back(new int[2]{x + i, y + j});
-                    vector<int *> aux = auxBacktraking(x + i, y + j, path, board);
-                    if (aux.size() != 0)
-                        return aux;
-                    path.pop_back();
-                    board[x + i + (y + j) * 8] = false;
-                }
-            }
-            if (y - j >= 0 && y - j < 8)
-            {
-                if (board[x + i + (y - j) * 8] == false)
-                {
-                    board[x + i + (y - j) * 8] = true;
-                    path.push_back(new int[2]{x + i, y - j});
-                    vector<int *> aux = auxBacktraking(x + i, y - j, path, board);
-                    if (aux.size() != 0)
-                        return aux;
-                    path.pop_back();
-                    board[x + i + (y - j) * 8] = false;
-                }
-            }
-        }
-    }
-
-    return vector<int *>();
 }
 
 static void printBoard(char board[8][8], int previousX = -1, int previousY = -1)
@@ -97,51 +38,6 @@ static void printBoard(char board[8][8], int previousX = -1, int previousY = -1)
         cout << "  +---+---+---+---+---+---+---+---+" << endl;
     }
     cout << "    A   B   C   D   E   F   G   H" << endl;
-}
-
-void backtraking(int x, int y)
-{
-    bool board[64] = {false};
-    board[x + y * 8] = true;
-    vector<int *> path;
-    path.push_back(new int[2]{x, y});
-
-    path = auxBacktraking(x, y, path, board);
-
-    char pBoard[8][8];
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            pBoard[i][j] = ' ';
-        }
-    }
-
-    if (path.size() > 0)
-    {
-        for (int i = 0; i < path.size(); i++)
-        {
-            if (i > 0)
-            {
-                pBoard[path[i - 1][0]][path[i - 1][1]] = '#';
-            }
-            pBoard[path[i][0]][path[i][1]] = 'K';
-            cout << "ITERATION " << i << endl;
-            if (i == 0)
-            {
-                printBoard(pBoard);
-            }
-            else
-            {
-                printBoard(pBoard, path[i - 1][0], path[i - 1][1]);
-            }
-            cout << endl;
-        }
-    }
-    else
-    {
-        cout << "NAO ENCONTRADO" << endl;
-    }
 }
 
 static vector<int> createTable()
@@ -296,140 +192,22 @@ int getNumberOfVisitedCells(vector<bool> visited)
     return counter;
 }
 
-// void greedySearch(int x, int y, int order)
-// {
 
-//     bool success = false, failure = false;
-
-//     list<Moviment *> open;
-
-//     vector<bool> visited;
-//     visited.resize(64, false);
-
-//     Moviment *moviment = new Moviment(x, y, order);
-
-//     open.push_back(moviment);
-
-//     int iterations = 0;
-
-//     while (!(success || failure))
-//     {
-//         if (open.empty())
-//         {
-//             cout << "Fila vazia : falhou " << endl;
-//             failure = true;
-//         }
-//         else
-//         {
-//             Moviment *current = open.front();
-//             open.pop_front();
-
-//             visited[current->getArrayPosition()] = true;
-
-//             int visitedCells = getNumberOfVisitedCells(visited);
-
-//             cout << "Visitadas " << visitedCells << endl;
-
-//             if (visitedCells == order * order)
-//             {
-//                 success = true;
-//                 printResults(current, iterations + 1);
-//             }
-
-//             else
-//             {
-//                 int minNumberOfMoviments = 0;
-//                 Moviment *minMoviment = new Moviment(0, 0, order);
-
-//                 for (Moviment *mov : current->getReachableMoviments())
-//                 {
-//                     // Checa se o próxima celula da lista de alcançaveis ainda não foi visitado
-//                     if (!visited[mov->getArrayPosition()])
-//                     {
-//                         mov->board->setVisited(visited);
-//                         mov->setFather(current);
-
-//                         int validMoviments = 0;
-
-//                         for (Moviment *childMov : mov->getReachableMoviments())
-//                         {
-//                             bool isVisited = visited[childMov->getArrayPosition()];
-
-//                             if (!isVisited)
-//                                 validMoviments++;
-
-//                             if (validMoviments < minNumberOfMoviments)
-//                             {
-//                                 minNumberOfMoviments = validMoviments;
-//                                 minMoviment = childMov;
-//                             }
-//                         }
-//                     }
-//                 }
-
-//                 open.push_back(minMoviment);
-//             }
-//         }
-
-//         iterations++;
-//     }
-// }
-
-// void backtracking(int x, int y, int order)
-// {
-//     bool success = false;
-//     bool failure = false;
-//     Moviment *current = new Moviment(x, y, order);
-
-//     while (!(success || failure))
-//     {
-
-//         current->board->visited[current->getArrayPosition()] = true;
-
-//         if (current->board->getNumberOfVisitedCells() == order * order)
-//             success = true;
-
-//         vector<Moviment *> validMoviments = current->getReachableMoviments();
-
-//         if (validMoviments.size() > 0)
-//         {
-//             Moviment *next = validMoviments[0];
-//             next->setBoard(current->board);
-//             current = next;
-//         }
-//         else
-//         {
-//             if (current->getFather() != nullptr)
-//             {
-//                 current->board->visited[current->getArrayPosition()] = false;
-//                 Moviment *next = current->getFather();
-
-//                 current = next;
-//             }
-
-//             else
-//                 failure = true;
-//         }
-//     }
-
-//     if (success)
-//         current->printSolution();
-
-//     else
-//         cout << "Solução não encontrada" << endl;
-// }
+int iterations = 0;
 
 bool solveBacktracking(Moviment *current, int order)
 {
     current->board->visited[current->getArrayPosition()] = true;
+    iterations++;
 
     if (current->board->getNumberOfVisitedCells() == order * order)
     {
-        current->printSolution();
+
+        printResults(current, iterations);
         return true;
     }
 
-    //cout << "Solucionando... " << current->board->getNumberOfVisitedCells() << endl;
+    // cout << "Solucionando... " << current->board->getNumberOfVisitedCells() << endl;
 
     vector<Moviment *> validMoviments = current->getReachableMoviments();
 
@@ -449,12 +227,9 @@ bool solveBacktracking(Moviment *current, int order)
 void backtracking(int x, int y, int order)
 {
     Moviment *start = new Moviment(x, y, order);
+    iterations = 0;
 
-    if (solveBacktracking(start, order))
-    {
-        cout << "Encontrado" << endl;
-    }
-    else
+    if (!solveBacktracking(start, order))
     {
         cout << "Não encontrado" << endl;
     }
