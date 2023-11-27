@@ -120,6 +120,32 @@ void closedListToViz(list<Moviment *> closed)
     file << stream.str();
 }
 
+void lastNodeToViz(Moviment *start)
+{
+    ofstream file("result.dot");
+    stringstream stream;
+
+    if (file.is_open())
+    {
+
+        stream << "graph G {\n";
+
+        Moviment *current = start;
+
+        while (current != nullptr)
+        {
+
+            if (current->getFather() != nullptr)
+                stream << current->getFather()->getPosition() << "--" << current->getPosition() << ";\n";
+            current = current->getFather();
+        }
+
+        stream << "\n}";
+    }
+
+    file << stream.str();
+}
+
 void breadthFirstSearch(int x, int y, int order)
 {
 
@@ -192,13 +218,15 @@ int getNumberOfVisitedCells(vector<bool> visited)
     return counter;
 }
 
-
 int iterations = 0;
+list<Moviment *> closed;
 
 bool solveBacktracking(Moviment *current, int order)
 {
     current->board->visited[current->getArrayPosition()] = true;
     iterations++;
+
+    closed.push_back(current);
 
     if (current->board->getNumberOfVisitedCells() == order * order)
     {
@@ -206,8 +234,6 @@ bool solveBacktracking(Moviment *current, int order)
         printResults(current, iterations);
         return true;
     }
-
-    // cout << "Solucionando... " << current->board->getNumberOfVisitedCells() << endl;
 
     vector<Moviment *> validMoviments = current->getReachableMoviments();
 
@@ -228,6 +254,7 @@ void backtracking(int x, int y, int order)
 {
     Moviment *start = new Moviment(x, y, order);
     iterations = 0;
+    closed.resize(0);
 
     if (!solveBacktracking(start, order))
     {
