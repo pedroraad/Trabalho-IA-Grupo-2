@@ -68,6 +68,8 @@ public:
                     {
                         newMove->setFather(this);
                         newMove->board->setVisited(this->board->visited);
+                        newMove->board->updateVisitedPositions(this->board->getNumberOfVisitedCells());
+
                         possibleMoviments.push_back(newMove);
                     }
                     else
@@ -78,50 +80,28 @@ public:
             }
         };
 
-
-
         // 2 casas para cima 1 casa para direita
         addIfValid(this->x + 1, y - 2);
         // 2 casas para cima 1 casa para esquerda
         addIfValid(this->x - 1, y - 2);
 
-        // 2 casas para baixo
-        if (this->y + 2 <= boardOrder - 1)
-        {
-            int newYPos = this->y + 2;
+        // 2 casas para baixo  1 casa para direita
+        addIfValid(x + 1, y + 2);
+        // 2 casas para baixo 1 casa para esquerda
+        addIfValid(x - 1, y + 2);
 
-            // 1 casa para direita
-            addIfValid(this->x + 1, newYPos);
+        // 2 casas para direita 1 casa para baixo
+        addIfValid(x + 2, y + 1);
+        // 2 casas para direita 1 casa para cima
+        addIfValid(x + 2, y - 1);
 
-            // 1 casa para esquerda
-            addIfValid(this->x - 1, newYPos);
-        }
-
-        // 2 casas para direita
-        if (this->x + 2 <= boardOrder - 1)
-        {
-            int newXPos = this->x + 2;
-
-            // 1 casa para baixo
-            addIfValid(newXPos, this->y + 1);
-
-            // 1 casa para cima
-            addIfValid(newXPos, this->y - 1);
-        }
-
-        // 2 casas para esquerda
-        if (this->x - 2 >= 0)
-        {
-            int newXPos = this->x - 2;
-
-            // 1 casa para baixo
-            addIfValid(newXPos, this->y + 1);
-
-            // 1 casa para cima
-            addIfValid(newXPos, this->y - 1);
-        }
+        // 2 casas para esquerda 1 casa para baixo
+        addIfValid(x - 2, y + 1);
+        // 2 casas para esquerda 1 casa para cima
+        addIfValid(x - 2, y - 1);
 
         this->numberOfReachablePositions = possibleMoviments.size();
+
         return possibleMoviments;
     }
 

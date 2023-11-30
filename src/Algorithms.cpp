@@ -146,7 +146,7 @@ void breadthFirstSearch(int x, int y, int order)
             Moviment *current = open.front();
             open.pop_front();
 
-            current->board->visited[current->getArrayPosition()] = true;
+            current->board->setPositionVisited(current->getArrayPosition());
 
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
@@ -155,13 +155,8 @@ void breadthFirstSearch(int x, int y, int order)
             }
             else
             {
-
                 for (Moviment *mov : current->getReachableMoviments())
-                {
-                    // Checa se o próxima celula da lista de alcançaveis ainda não foi visitado
-                    if (!current->board->hasAlreadyVisited(mov->getArrayPosition()))
-                        open.push_back(mov);
-                }
+                    open.push_back(mov);
             }
 
             closed.push_back(current);
@@ -189,14 +184,13 @@ list<Moviment *> closed;
 
 bool solveBacktracking(Moviment *current, int order)
 {
-    current->board->visited[current->getArrayPosition()] = true;
+    current->board->setPositionVisited(current->getArrayPosition());
     iterations++;
 
     closed.push_back(current);
 
     if (current->board->getNumberOfVisitedCells() == order * order)
     {
-
         printResults(current, iterations);
         return true;
     }
@@ -205,14 +199,13 @@ bool solveBacktracking(Moviment *current, int order)
 
     for (Moviment *validMoviment : validMoviments)
     {
-        validMoviment->setBoard(current->board);
+
         if (solveBacktracking(validMoviment, order))
-        {
             return true;
-        }
+        
     }
 
-    current->board->visited[current->getArrayPosition()] = false;
+    current->board->setPositionVisited(current->getArrayPosition(),  false);
     return false;
 }
 
@@ -257,7 +250,7 @@ bool solveGreedySearch(Moviment *current, int order)
         return true;
     }
 
-    vector<Moviment *> validMoviments = current->getReachableMoviments();   
+    vector<Moviment *> validMoviments = current->getReachableMoviments();
     sortOpenList(validMoviments);
 
     for (Moviment *validMoviment : validMoviments)
@@ -359,7 +352,7 @@ void depthFirstSearch(int x, int y, int order)
             Moviment *current = open.front();
             open.pop_front();
 
-            current->board->visited[current->getArrayPosition()] = true;
+            current->board->setPositionVisited(current->getArrayPosition());
 
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
@@ -369,10 +362,7 @@ void depthFirstSearch(int x, int y, int order)
             else
             {
                 for (Moviment *mov : current->getReachableMoviments())
-                {
-                    if (!current->board->hasAlreadyVisited(mov->getArrayPosition()))
-                        open.push_front(mov);
-                }
+                    open.push_front(mov);
             }
 
             closed.push_back(current);

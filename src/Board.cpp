@@ -6,6 +6,7 @@ class Board
 {
 private:
     int boardSize;
+    int visitedPositions = 0;
     int order;
 
 public:
@@ -35,9 +36,16 @@ public:
         return this->visited[position];
     }
 
-    void setPositionVisited(int position)
+    void setPositionVisited(int position, bool newState = true)
     {
-        this->visited[position] = true;
+        if (!this->visited[position])
+        {
+            this->visited[position] = newState;
+            this->visitedPositions++;
+        }else{
+            this->visited[position] = newState;
+            this->visitedPositions--;
+        }
     }
 
     void setVisited(vector<bool> visited)
@@ -52,6 +60,7 @@ public:
 
     int getNumberOfVisitedCells()
     {
+        /*
         int counter = 0;
 
         for (bool element : this->visited)
@@ -61,6 +70,9 @@ public:
         }
 
         return counter;
+        */
+
+        return this->visitedPositions;
     }
 
     void printVisited()
@@ -82,6 +94,10 @@ public:
         }
 
         cout << "-----------------------------------------------" << endl;
+    }
+
+    void updateVisitedPositions(int visitedPos){
+        this->visitedPositions = visitedPos;
     }
 
     vector<bool> clone(const std::vector<bool> &original)
