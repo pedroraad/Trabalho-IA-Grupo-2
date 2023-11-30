@@ -12,6 +12,10 @@ void clearTerminal()
 
 int main()
 {
+    greedySearch(0,0,6);
+
+    return 0;
+
 
     Performance perfomance;
     Knight knight;

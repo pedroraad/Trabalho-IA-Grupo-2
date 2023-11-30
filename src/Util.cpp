@@ -3,6 +3,7 @@
 #include <fstream>
 #include <algorithm>
 
+
 using namespace std;
 
 class Util
@@ -29,11 +30,11 @@ public:
         }
 
         jsonString += "]";
-        
+
         return jsonString;
     }
 
-    void createJsonObjectOfVectors(vector<vector<int>> states , string filename)
+    void createJsonObjectOfVectors(vector<vector<int>> states, string filename)
     {
         string filePath = "./front/src/" + filename;
 

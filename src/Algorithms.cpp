@@ -14,32 +14,13 @@ void printList(list<Moviment *> myList)
     std::cout << std::endl;
 }
 
-static vector<int> createTable()
+void printVector(vector<Moviment *> myList)
 {
-    int size = 64;
 
-    vector<int> table;
+    for (Moviment *value : myList)
+        cout << value->getReachableMoviments().size() << ",";
 
-    table.resize(64, 0);
-
-    return table;
-}
-
-static void printTable(vector<int> table)
-{
-    int counter = 1;
-
-    for (auto cell : table)
-    {
-        cout << "|" << cell << "|";
-
-        if (counter % 8 == 0)
-        {
-            cout << endl;
-        }
-
-        counter++;
-    }
+    cout << endl;
 }
 
 void printResults(Moviment *winner, int iterations)
@@ -202,10 +183,9 @@ bool solveBacktracking(Moviment *current, int order)
 
         if (solveBacktracking(validMoviment, order))
             return true;
-        
     }
 
-    current->board->setPositionVisited(current->getArrayPosition(),  false);
+    current->board->setPositionVisited(current->getArrayPosition(), false);
     return false;
 }
 
@@ -238,7 +218,8 @@ void sortOpenList(vector<Moviment *> &open)
 
 bool solveGreedySearch(Moviment *current, int order)
 {
-    current->board->visited[current->getArrayPosition()] = true;
+
+    current->board->setPositionVisited(current->getArrayPosition());
     iterations++;
 
     closed.push_back(current);
@@ -251,23 +232,25 @@ bool solveGreedySearch(Moviment *current, int order)
     }
 
     vector<Moviment *> validMoviments = current->getReachableMoviments();
+
     sortOpenList(validMoviments);
+    printVector(validMoviments);
 
     for (Moviment *validMoviment : validMoviments)
     {
-        validMoviment->setBoard(current->board);
-        if (solveBacktracking(validMoviment, order))
-        {
+        if (solveGreedySearch(validMoviment, order))
             return true;
-        }
     }
 
-    current->board->visited[current->getArrayPosition()] = false;
+    current->board->setPositionVisited(current->getArrayPosition(), false);
     return false;
 }
 
 void greedySearch(int x, int y, int order)
 {
+
+    iterations = 0;
+
     Moviment *moviment = new Moviment(x, y, order);
     solveGreedySearch(moviment, order);
 }
