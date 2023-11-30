@@ -18,6 +18,7 @@ private:
     int y;
 
 public:
+    int numberOfReachablePositions;
     Board *board;
 
     Moviment(int x, int y, int boardOrder)
@@ -66,6 +67,7 @@ public:
                     if (it == possibleMoviments.end())
                     {
                         newMove->setFather(this);
+                        newMove->board->setVisited(this->board->visited);
                         possibleMoviments.push_back(newMove);
                     }
                     else
@@ -124,6 +126,7 @@ public:
             addIfValid(newXPos, this->y - 1);
         }
 
+        this->numberOfReachablePositions = possibleMoviments.size();
         return possibleMoviments;
     }
 
