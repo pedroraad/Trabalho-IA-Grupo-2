@@ -78,17 +78,12 @@ public:
             }
         };
 
-        // 2 casas para cima
-        if (this->y - 2 >= 0)
-        {
-            int newYPos = this->y - 2;
 
-            // 1 casa para direita
-            addIfValid(this->x + 1, newYPos);
 
-            // 1 casa para esquerda
-            addIfValid(this->x - 1, newYPos);
-        }
+        // 2 casas para cima 1 casa para direita
+        addIfValid(this->x + 1, y - 2);
+        // 2 casas para cima 1 casa para esquerda
+        addIfValid(this->x - 1, y - 2);
 
         // 2 casas para baixo
         if (this->y + 2 <= boardOrder - 1)
