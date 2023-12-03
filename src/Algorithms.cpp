@@ -23,10 +23,10 @@ void printVector(vector<Moviment *> myList)
     cout << endl;
 }
 
-void printResults(Moviment *winner, int iterations)
+void printResults(Moviment *winner, int iterations, string resultFilename)
 {
     cout << "Solução encontrada : " << endl;
-    winner->printSolution();
+    winner->printSolution(resultFilename);
     cout << "Estados explorados: " << iterations << endl;
 }
 
@@ -132,7 +132,7 @@ void breadthFirstSearch(int x, int y, int order)
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
-                printResults(current, iterations + 1);
+                printResults(current, iterations + 1 , "resultBFS");
             }
             else
             {
@@ -172,7 +172,7 @@ bool solveBacktracking(Moviment *current, int order)
 
     if (current->board->getNumberOfVisitedCells() == order * order)
     {
-        printResults(current, iterations);
+        printResults(current, iterations , "resultbacktracking");
         return true;
     }
 
@@ -227,14 +227,13 @@ bool solveGreedySearch(Moviment *current, int order)
     if (current->board->getNumberOfVisitedCells() == order * order)
     {
 
-        printResults(current, iterations);
+        printResults(current, iterations, "resultGreedy");
         return true;
     }
 
     vector<Moviment *> validMoviments = current->getReachableMoviments();
 
     sortOpenList(validMoviments);
-    printVector(validMoviments);
 
     for (Moviment *validMoviment : validMoviments)
     {
@@ -255,60 +254,6 @@ void greedySearch(int x, int y, int order)
     solveGreedySearch(moviment, order);
 }
 
-// void greedySearch(int x, int y, int order)
-// {
-//     bool success = false, failure = false;
-
-//     list<Moviment *> open;
-//     list<Moviment *> closed;
-
-//     Moviment *moviment = new Moviment(x, y, order);
-//     open.push_front(moviment);
-
-//     int iterations = 0;
-
-//     Moviment *current = moviment;
-
-//     while (!(success || failure))
-//     {
-
-//         iterations++;
-
-//         if (open.size() == 0)
-//         {
-//             failure = true;
-//         }
-//         else
-//         {
-//             sortOpenList(open);
-//             printList(open);
-
-//             Moviment *current = open.front();
-//             open.pop_front();
-
-//             current->board->visited[current->getArrayPosition()] = true;
-
-//             cout << "Nivel da solução : " << current->board->getNumberOfVisitedCells() << endl;
-
-//             if (current->board->getNumberOfVisitedCells() == order * order)
-//             {
-//                 success = true;
-//                 printResults(current, iterations + 1);
-//             }
-//             else
-//             {
-//                 vector<Moviment*> reachable =
-
-//                 for (Moviment *mov : current->getReachableMoviments())
-//                 {
-//                     // Checa se o próxima celula da lista de alcançaveis ainda não foi visitado
-//                     if (!current->board->hasAlreadyVisited(mov->getArrayPosition()))
-//                         open.push_back(mov);
-//                 }
-//             }
-//         }
-//     }
-// }
 
 void depthFirstSearch(int x, int y, int order)
 {
@@ -340,7 +285,7 @@ void depthFirstSearch(int x, int y, int order)
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
-                printResults(current, iterations + 1);
+                printResults(current, iterations + 1, "resultDFS");
             }
             else
             {

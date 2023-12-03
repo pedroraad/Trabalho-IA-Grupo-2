@@ -1,10 +1,10 @@
 // eslint-disable-next-line react/prop-types
-const Chessboard = ({ boardState = [] }) => {
+const Chessboard = ({ boardState = [], boardOrder }) => {
   // Suponha que boardState seja uma matriz representando o estado atual do tabuleiro
 
   // Função para renderizar as casas do tabuleiro
   const renderBoard = () => {
-    const board = arrayToMatrix(boardState, 5, 5);
+    const board = arrayToMatrix(boardState, boardOrder, boardOrder);
 
     return board.map((row, rowIndex) => (
       <div key={rowIndex} className="chessboard-row">

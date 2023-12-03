@@ -12,11 +12,6 @@ void clearTerminal()
 
 int main()
 {
-    greedySearch(0,0,6);
-
-    return 0;
-
-
     Performance perfomance;
     Knight knight;
     clearTerminal();
@@ -31,6 +26,7 @@ int main()
         cout << "3.\x1B[0m\x1B[3mBacktracking\x1B[0m \x1B[1m" << endl;
         cout << "4.\x1B[0m\x1B[3mBusca em Largura\x1B[0m \x1B[1m" << endl;
         cout << "5.\x1B[0m\x1B[3mBusca em profundidade\x1B[0m \x1B[1m" << endl;
+        cout << "6.\x1B[0m\x1B[3mBusca Gulosa\x1B[0m \x1B[1m" << endl;
         cout << "0.\x1B[0m\x1B[3mSair\x1B[0m \x1B[1m" << endl;
         cout << "=========================\x1B[0m" << endl;
         cout << "Opção: ";
@@ -82,6 +78,15 @@ int main()
 
             perfomance.start();
             depthFirstSearch(knight.getX(), knight.getY(), order);
+            perfomance.end();
+        }
+        else if (option == 6)
+        {
+            cout << "Digite a ordem do tabuleiro: " << endl;
+            cin >> order;
+
+            perfomance.start();
+            greedySearch(knight.getX(), knight.getY(), order);
             perfomance.end();
         }
         else if (option == 0)

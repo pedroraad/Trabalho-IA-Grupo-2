@@ -3,7 +3,6 @@
 #include <fstream>
 #include <algorithm>
 
-
 using namespace std;
 
 class Util
@@ -34,7 +33,7 @@ public:
         return jsonString;
     }
 
-    void createJsonObjectOfVectors(vector<vector<int>> states, string filename)
+    void createJsonFileResult(vector<int> states, string filename, int boardOrder)
     {
         string filePath = "./front/src/" + filename;
 
@@ -44,18 +43,16 @@ public:
         {
             file << "{\n";
 
-            for (int i = 0; i < states.size(); i++)
-            {
-                file << "\"" << i << "\":";
-                string json = vectorToJsonString(states[i]);
+            file << "\"boardOrder\":";
+            file << boardOrder;
+            file << ",\n";
 
-                if (i < states.size() - 1)
-                {
-                    json += ",\n";
-                }
+            file << "\"data\" :" ;
+  
 
-                file << json;
-            }
+            string json = vectorToJsonString(states);
+
+            file << json;
 
             cout << "-----------------------------------------------" << endl;
 

@@ -140,7 +140,7 @@ public:
         return this->father;
     }
 
-    void printSolution()
+    void printSolution(string resultFilename)
     {
         Util util;
 
@@ -150,10 +150,6 @@ public:
         vector<int> table;
         table.resize(boardOrder * boardOrder, -1);
 
-        vector<vector<int>> states;
-
-        states.resize(boardOrder * boardOrder);
-
         int auxCounter = 0;
 
         while (aux != nullptr)
@@ -161,11 +157,6 @@ public:
             table[aux->getArrayPosition()] = posCounter;
 
             aux = aux->getFather();
-
-            states[auxCounter].resize(boardOrder * boardOrder, -1);
-            states[auxCounter] = table;
-
-            auxCounter++;
             posCounter--;
         }
 
@@ -187,7 +178,7 @@ public:
 
         cout << "-----------------------------------------------" << endl;
 
-        util.createJsonObjectOfVectors(states, "result.json");
+        util.createJsonFileResult(table, resultFilename + ".json", boardOrder);
     }
 
     void setBoard(Board *board)
