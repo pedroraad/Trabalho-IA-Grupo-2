@@ -2,7 +2,6 @@
 #include "Knight.h"
 #include "Algorithms.h"
 #include "Performance.h"
-#include "RandomNumberGenerator.cpp"
 
 using namespace std;
 
@@ -107,7 +106,6 @@ int main()
             cin >> order;
 
             perfomance.start();
-            cout << "Começando a start " << endl;
             aStarSearch(knight.getX(), knight.getY(), order);
             perfomance.end();
         }

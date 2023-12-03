@@ -28,14 +28,8 @@ public:
 
     ~Board()
     {
-
-        for (bool position : visited)
-        {
-            delete &position;
-        }
-
-        //this->visited.resize(0);
-        delete &visited;
+        this->visited.clear();
+        this->visited.shrink_to_fit();
     }
 
     bool hasAlreadyVisited(int position)

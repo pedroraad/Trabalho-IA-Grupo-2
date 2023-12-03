@@ -3,7 +3,6 @@
 #include <fstream>
 #include <algorithm>
 #include <sstream>
-#include "RandomNumberGenerator.cpp"
 #include "Util.cpp"
 #include "Board.cpp"
 
@@ -13,7 +12,6 @@ class Moviment
 {
 private:
     Moviment *father;
-    RandomNumberGenerator generator;
 
     int boardOrder;
     int weight;
@@ -30,20 +28,15 @@ public:
         this->y = y;
         this->father = nullptr;
 
-        this->weight = calcMovimentWeight();
         this->boardOrder = boardOrder;
         this->board = new Board(boardOrder);
     }
 
     ~Moviment()
     {
-        delete &boardOrder;
-        delete &weight;
-        delete &x;
-        delete &y;
 
         delete board;
-        delete &this->father;
+        delete father;
     }
 
     Moviment(int x, int y, Moviment *father)
@@ -52,37 +45,16 @@ public:
         this->y = y;
         this->father = father;
 
-        this->weight = calcMovimentWeight();
         this->board = new Board(this->boardOrder);
     }
 
-    int calcMovimentWeight()
-    {
-        return proximityToCenterValue();
+    double getAstarWeight(){
+        return this->getPathWeight() + this->getWeight();
     }
 
-    double euclideanDistance(int x1, int y1, int x2, int y2)
+    vector<Moviment *> getReachableMoviments()
     {
-        int dx = x1 - x2;
-        int dy = y1 - y2;
-        return std::sqrt(dx * dx + dy * dy);
-    }
-
-    double proximityToCenterValue()
-    {
-        int centerX = boardOrder / 2;
-        int centerY = boardOrder / 2;
-
-        // Calcula a distância euclidiana
-        double distance = euclideanDistance(x, y, centerX, centerY);
-
-        // Quanto menor a distância, menor o valor gerado
-        return distance;
-    }
-
-    vector<Moviment*> getReachableMoviments()
-    {
-        vector<Moviment*> possibleMoviments;
+        vector<Moviment *> possibleMoviments;
 
         auto addIfValid = [&](int x, int y)
         {
@@ -110,7 +82,7 @@ public:
                     }
                     else
                     {
-                        delete newMove; 
+                        delete newMove;
                     }
                 }
             }

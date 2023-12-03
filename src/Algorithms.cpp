@@ -315,12 +315,15 @@ void depthFirstSearch(int x, int y, int order)
 bool compareAStar(Moviment *a, Moviment *b)
 {
 
-    return (b->getPathWeight() + b->getReachableMoviments().size()) > (a->getPathWeight() + a->getReachableMoviments().size());
+    return b->getReachableMoviments().size() > a->getReachableMoviments().size();
 }
 
-void sortAStarOpenList(list<Moviment *> &open)
+void sortAStarOpenList(list<Moviment *> &open, int iterations)
 {
     open.sort(compareAStar);
+
+    if (iterations % 1000 == 0)
+        printList(open);
 }
 
 void orderedSearch(int x, int y, int order)
@@ -343,7 +346,7 @@ void orderedSearch(int x, int y, int order)
         }
         else
         {
-            sortOpenListByWeight(open , iterations);
+            sortOpenListByWeight(open, iterations);
 
             Moviment *current = open.front();
             open.pop_front();
@@ -357,12 +360,10 @@ void orderedSearch(int x, int y, int order)
             }
             else
             {
+
                 for (Moviment *mov : current->getReachableMoviments())
                     open.push_front(mov);
             }
-
-    
-            delete current;
         }
 
         iterations++;
@@ -383,6 +384,8 @@ void aStarSearch(int x, int y, int order)
 
     while (!(success || failure))
     {
+        iterations++;
+
         if (open.empty())
         {
             cout << "Fila vazia : falhou " << endl;
@@ -391,7 +394,7 @@ void aStarSearch(int x, int y, int order)
         else
         {
 
-            sortAStarOpenList(open);
+            sortAStarOpenList(open, iterations);
 
             Moviment *current = open.front();
             open.pop_front();
@@ -411,7 +414,5 @@ void aStarSearch(int x, int y, int order)
 
             closed.push_back(current);
         }
-
-        iterations++;
     }
 }
