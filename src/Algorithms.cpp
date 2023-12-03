@@ -132,7 +132,7 @@ void breadthFirstSearch(int x, int y, int order)
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
-                printResults(current, iterations + 1 , "resultBFS");
+                printResults(current, iterations + 1, "resultBFS");
             }
             else
             {
@@ -172,7 +172,7 @@ bool solveBacktracking(Moviment *current, int order)
 
     if (current->board->getNumberOfVisitedCells() == order * order)
     {
-        printResults(current, iterations , "resultbacktracking");
+        printResults(current, iterations, "resultbacktracking");
         return true;
     }
 
@@ -216,6 +216,17 @@ void sortOpenList(vector<Moviment *> &open)
     sort(open.begin(), open.end(), compareMoviments);
 }
 
+bool compareWeight(Moviment *a, Moviment *b)
+{
+    return b->getWeight() > a->getWeight();
+}
+
+void sortOpenListByWeight(list<Moviment *> &open)
+{
+    open.sort(compareWeight);
+    printList(open);
+}
+
 bool solveGreedySearch(Moviment *current, int order)
 {
 
@@ -254,7 +265,6 @@ void greedySearch(int x, int y, int order)
     solveGreedySearch(moviment, order);
 }
 
-
 void depthFirstSearch(int x, int y, int order)
 {
 
@@ -286,6 +296,112 @@ void depthFirstSearch(int x, int y, int order)
             {
                 success = true;
                 printResults(current, iterations + 1, "resultDFS");
+            }
+            else
+            {
+                for (Moviment *mov : current->getReachableMoviments())
+                    open.push_front(mov);
+            }
+
+            closed.push_back(current);
+        }
+
+        iterations++;
+    }
+}
+
+bool compareAStar(Moviment *a, Moviment *b)
+{
+    return (b->getPathWeight() + b->getReachableMoviments().size()) > (a->getPathWeight() + a->getReachableMoviments().size());
+}
+
+void sortAStarOpenList(list<Moviment *> &open)
+{
+    open.sort(compareAStar);
+}
+
+
+void orderedSearch(int x, int y, int order)
+{
+    bool success = false, failure = false;
+
+    list<Moviment *> open;
+    list<Moviment *> closed;
+
+    Moviment *moviment = new Moviment(x, y, order);
+    open.push_front(moviment);
+
+    int iterations = 0;
+
+    while (!(success || failure))
+    {
+        if (open.empty())
+        {
+            cout << "Fila vazia : falhou " << endl;
+            failure = true;
+        }
+        else
+        {
+            sortOpenListByWeight(open);
+
+            Moviment *current = open.front();
+            open.pop_front();
+
+            current->board->setPositionVisited(current->getArrayPosition());
+
+            printList(open);
+
+            if (current->board->getNumberOfVisitedCells() == order * order)
+            {
+                success = true;
+                printResults(current, iterations + 1, "resultOrdered");
+            }
+            else
+            {
+                for (Moviment *mov : current->getReachableMoviments())
+                    open.push_front(mov);
+            }
+
+            closed.push_back(current);
+        }
+
+        iterations++;
+    }
+}
+
+
+void aStarSearch(int x, int y, int order)
+{
+    bool success = false, failure = false;
+
+    list<Moviment *> open;
+    list<Moviment *> closed;
+
+    Moviment *moviment = new Moviment(x, y, order);
+    open.push_front(moviment);
+
+    int iterations = 0;
+
+    while (!(success || failure))
+    {
+        if (open.empty())
+        {
+            cout << "Fila vazia : falhou " << endl;
+            failure = true;
+        }
+        else
+        {
+            sortAStarOpenList(open);
+
+            Moviment *current = open.front();
+            open.pop_front();
+
+            current->board->setPositionVisited(current->getArrayPosition());
+
+            if (current->board->getNumberOfVisitedCells() == order * order)
+            {
+                success = true;
+                printResults(current, iterations + 1, "resultOrdered");
             }
             else
             {

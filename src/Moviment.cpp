@@ -3,6 +3,7 @@
 #include <fstream>
 #include <algorithm>
 #include <sstream>
+#include "RandomNumberGenerator.cpp"
 #include "Util.cpp"
 #include "Board.cpp"
 
@@ -12,8 +13,10 @@ class Moviment
 {
 private:
     Moviment *father;
+    RandomNumberGenerator generator;
 
     int boardOrder;
+    int weight;
     int x;
     int y;
 
@@ -27,6 +30,7 @@ public:
         this->y = y;
         this->father = nullptr;
 
+        this->weight = calcMovimentWeight();
         this->boardOrder = boardOrder;
         this->board = new Board(boardOrder);
     }
@@ -42,8 +46,34 @@ public:
         this->y = y;
         this->father = father;
 
+        this->weight = calcMovimentWeight();
         this->board = new Board(this->boardOrder);
     }
+
+    int calcMovimentWeight()
+    {
+        return proximityToCenterValue();
+    }
+
+    double euclideanDistance(int x1, int y1, int x2, int y2)
+    {
+        int dx = x1 - x2;
+        int dy = y1 - y2;
+        return std::sqrt(dx * dx + dy * dy);
+    }
+
+    double proximityToCenterValue()
+    {
+        int centerX = boardOrder / 2;
+        int centerY = boardOrder / 2;
+
+        // Calcula a distância euclidiana
+        double distance = euclideanDistance(x, y, centerX, centerY);
+
+        // Quanto menor a distância, menor o valor gerado
+        return distance;
+    }
+
     vector<Moviment *> getReachableMoviments()
     {
         vector<Moviment *> possibleMoviments;
@@ -181,8 +211,29 @@ public:
         util.createJsonFileResult(table, resultFilename + ".json", boardOrder);
     }
 
+    int getPathWeight()
+    {
+
+        Moviment *aux = this;
+
+        int totalWeight = 0;
+
+        while (aux != nullptr)
+            totalWeight += aux->getWeight();
+
+        aux = aux->getFather();
+
+        return totalWeight;
+    }
+
+    int getWeight()
+    {
+        return this->weight;
+    }
+
     void setBoard(Board *board)
     {
         this->board = board;
     }
+
 };

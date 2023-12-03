@@ -2,6 +2,7 @@
 #include "Knight.h"
 #include "Algorithms.h"
 #include "Performance.h"
+#include "RandomNumberGenerator.cpp"
 
 using namespace std;
 
@@ -27,6 +28,8 @@ int main()
         cout << "4.\x1B[0m\x1B[3mBusca em Largura\x1B[0m \x1B[1m" << endl;
         cout << "5.\x1B[0m\x1B[3mBusca em profundidade\x1B[0m \x1B[1m" << endl;
         cout << "6.\x1B[0m\x1B[3mBusca Gulosa\x1B[0m \x1B[1m" << endl;
+        cout << "7.\x1B[0m\x1B[3mBusca Ordenada\x1B[0m \x1B[1m" << endl;
+        cout << "8.\x1B[0m\x1B[3mBusca A*\x1B[0m \x1B[1m" << endl;
         cout << "0.\x1B[0m\x1B[3mSair\x1B[0m \x1B[1m" << endl;
         cout << "=========================\x1B[0m" << endl;
         cout << "Opção: ";
@@ -89,6 +92,25 @@ int main()
             greedySearch(knight.getX(), knight.getY(), order);
             perfomance.end();
         }
+        else if (option == 7)
+        {
+            cout << "Digite a ordem do tabuleiro: " << endl;
+            cin >> order;
+
+            perfomance.start();
+            orderedSearch(knight.getX(), knight.getY(), order);
+            perfomance.end();
+        }
+        else if (option == 8)
+        {
+            cout << "Digite a ordem do tabuleiro: " << endl;
+            cin >> order;
+
+            perfomance.start();
+            aStarSearch(knight.getX(), knight.getY(), order);
+            perfomance.end();
+        }
+
         else if (option == 0)
         {
             break;
