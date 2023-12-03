@@ -107,6 +107,7 @@ int main()
             cin >> order;
 
             perfomance.start();
+            cout << "Começando a start " << endl;
             aStarSearch(knight.getX(), knight.getY(), order);
             perfomance.end();
         }

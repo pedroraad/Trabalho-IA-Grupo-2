@@ -28,7 +28,14 @@ public:
 
     ~Board()
     {
-        this->visited.resize(0);
+
+        for (bool position : visited)
+        {
+            delete &position;
+        }
+
+        //this->visited.resize(0);
+        delete &visited;
     }
 
     bool hasAlreadyVisited(int position)
@@ -42,7 +49,9 @@ public:
         {
             this->visited[position] = newState;
             this->visitedPositions++;
-        }else{
+        }
+        else
+        {
             this->visited[position] = newState;
             this->visitedPositions--;
         }
@@ -96,7 +105,8 @@ public:
         cout << "-----------------------------------------------" << endl;
     }
 
-    void updateVisitedPositions(int visitedPos){
+    void updateVisitedPositions(int visitedPos)
+    {
         this->visitedPositions = visitedPos;
     }
 

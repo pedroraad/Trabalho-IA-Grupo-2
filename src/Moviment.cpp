@@ -37,7 +37,13 @@ public:
 
     ~Moviment()
     {
+        delete &boardOrder;
+        delete &weight;
+        delete &x;
+        delete &y;
+
         delete board;
+        delete &this->father;
     }
 
     Moviment(int x, int y, Moviment *father)
@@ -74,9 +80,9 @@ public:
         return distance;
     }
 
-    vector<Moviment *> getReachableMoviments()
+    vector<Moviment*> getReachableMoviments()
     {
-        vector<Moviment *> possibleMoviments;
+        vector<Moviment*> possibleMoviments;
 
         auto addIfValid = [&](int x, int y)
         {
@@ -104,7 +110,7 @@ public:
                     }
                     else
                     {
-                        delete newMove; // Libera a memória alocada para o movimento duplicado
+                        delete newMove; 
                     }
                 }
             }
@@ -219,21 +225,21 @@ public:
         int totalWeight = 0;
 
         while (aux != nullptr)
+        {
             totalWeight += aux->getWeight();
-
-        aux = aux->getFather();
+            aux = aux->getFather();
+        }
 
         return totalWeight;
     }
 
     int getWeight()
     {
-        return this->weight;
+        return this->board->getNumberOfVisitedCells();
     }
 
     void setBoard(Board *board)
     {
         this->board = board;
     }
-
 };

@@ -9,7 +9,7 @@ void printList(list<Moviment *> myList)
 {
     for (Moviment *value : myList)
     {
-        std::cout << value->getReachableMoviments().size() << " ";
+        std::cout << value->getWeight() << " ";
     }
     std::cout << std::endl;
 }
@@ -218,13 +218,15 @@ void sortOpenList(vector<Moviment *> &open)
 
 bool compareWeight(Moviment *a, Moviment *b)
 {
-    return b->getWeight() > a->getWeight();
+    return a->getWeight() > b->getWeight();
 }
 
-void sortOpenListByWeight(list<Moviment *> &open)
+void sortOpenListByWeight(list<Moviment *> &open, int iterations)
 {
     open.sort(compareWeight);
-    printList(open);
+
+    if (iterations % 10000 == 0)
+        printList(open);
 }
 
 bool solveGreedySearch(Moviment *current, int order)
@@ -312,6 +314,7 @@ void depthFirstSearch(int x, int y, int order)
 
 bool compareAStar(Moviment *a, Moviment *b)
 {
+
     return (b->getPathWeight() + b->getReachableMoviments().size()) > (a->getPathWeight() + a->getReachableMoviments().size());
 }
 
@@ -320,13 +323,11 @@ void sortAStarOpenList(list<Moviment *> &open)
     open.sort(compareAStar);
 }
 
-
 void orderedSearch(int x, int y, int order)
 {
     bool success = false, failure = false;
 
     list<Moviment *> open;
-    list<Moviment *> closed;
 
     Moviment *moviment = new Moviment(x, y, order);
     open.push_front(moviment);
@@ -342,14 +343,12 @@ void orderedSearch(int x, int y, int order)
         }
         else
         {
-            sortOpenListByWeight(open);
+            sortOpenListByWeight(open , iterations);
 
             Moviment *current = open.front();
             open.pop_front();
 
             current->board->setPositionVisited(current->getArrayPosition());
-
-            printList(open);
 
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
@@ -362,13 +361,13 @@ void orderedSearch(int x, int y, int order)
                     open.push_front(mov);
             }
 
-            closed.push_back(current);
+    
+            delete current;
         }
 
         iterations++;
     }
 }
-
 
 void aStarSearch(int x, int y, int order)
 {
@@ -391,6 +390,7 @@ void aStarSearch(int x, int y, int order)
         }
         else
         {
+
             sortAStarOpenList(open);
 
             Moviment *current = open.front();
@@ -401,7 +401,7 @@ void aStarSearch(int x, int y, int order)
             if (current->board->getNumberOfVisitedCells() == order * order)
             {
                 success = true;
-                printResults(current, iterations + 1, "resultOrdered");
+                printResults(current, iterations + 1, "aStar");
             }
             else
             {
