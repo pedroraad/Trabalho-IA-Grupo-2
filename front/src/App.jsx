@@ -4,6 +4,7 @@ import bfsData from "./resultBFS.json";
 import dfsData from "./resultDFS.json";
 import greedyData from "./resultGreedy.json";
 import backtrackingData from "./resultbacktracking.json";
+import resultOrdered from './resultOrdered.json';
 import Chessboard from "./Chessboard";
 
 const dataByAlgorithm = {
@@ -23,6 +24,10 @@ const dataByAlgorithm = {
     data: greedyData,
     title: "Busca Gulosa",
   },
+  4: {
+    data : resultOrdered,
+    title : "Busca Ordenada"
+  }
 };
 
 const App = () => {
@@ -67,7 +72,7 @@ const App = () => {
   };
 
   const changeAlgorithm = () => {
-    if (algorithm == 3) setAlgorithm(0);
+    if (algorithm == 4) setAlgorithm(0);
     else setAlgorithm((prevState) => prevState + 1);
   };
 

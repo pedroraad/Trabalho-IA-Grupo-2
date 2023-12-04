@@ -224,9 +224,6 @@ bool compareWeight(Moviment *a, Moviment *b)
 void sortOpenListByWeight(list<Moviment *> &open, int iterations)
 {
     open.sort(compareWeight);
-
-    if (iterations % 10000 == 0)
-        printList(open);
 }
 
 bool solveGreedySearch(Moviment *current, int order)
@@ -321,9 +318,6 @@ bool compareAStar(Moviment *a, Moviment *b)
 void sortAStarOpenList(list<Moviment *> &open, int iterations)
 {
     open.sort(compareAStar);
-
-    if (iterations % 1000 == 0)
-        printList(open);
 }
 
 void orderedSearch(int x, int y, int order)
@@ -331,6 +325,7 @@ void orderedSearch(int x, int y, int order)
     bool success = false, failure = false;
 
     list<Moviment *> open;
+    list<Moviment*> closed;
 
     Moviment *moviment = new Moviment(x, y, order);
     open.push_front(moviment);
@@ -363,6 +358,12 @@ void orderedSearch(int x, int y, int order)
 
                 for (Moviment *mov : current->getReachableMoviments())
                     open.push_front(mov);
+            }
+
+            closed.push_back(current);
+
+            if(iterations == 20){
+                closedListToViz(closed);
             }
         }
 

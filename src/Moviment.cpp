@@ -207,7 +207,13 @@ public:
 
     int getWeight()
     {
-        return this->board->getNumberOfVisitedCells();
+        double weight = this->board->getNumberOfVisitedCells();
+
+        
+        if(this->father != nullptr)
+            weight += father->getWeight();
+
+        return weight;
     }
 
     void setBoard(Board *board)
