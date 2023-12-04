@@ -325,7 +325,6 @@ void orderedSearch(int x, int y, int order)
     bool success = false, failure = false;
 
     list<Moviment *> open;
-    list<Moviment*> closed;
 
     Moviment *moviment = new Moviment(x, y, order);
     open.push_front(moviment);
@@ -358,12 +357,6 @@ void orderedSearch(int x, int y, int order)
 
                 for (Moviment *mov : current->getReachableMoviments())
                     open.push_front(mov);
-            }
-
-            closed.push_back(current);
-
-            if(iterations == 20){
-                closedListToViz(closed);
             }
         }
 
