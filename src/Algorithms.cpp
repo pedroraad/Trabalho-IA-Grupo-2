@@ -312,7 +312,7 @@ void depthFirstSearch(int x, int y, int order)
 bool compareAStar(Moviment *a, Moviment *b)
 {
 
-    return b->getReachableMoviments().size() > a->getReachableMoviments().size();
+    return b->getAstarWeight() > a->getAstarWeight();
 }
 
 void sortAStarOpenList(list<Moviment *> &open, int iterations)

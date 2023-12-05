@@ -48,8 +48,8 @@ public:
         this->board = new Board(this->boardOrder);
     }
 
-    double getAstarWeight(){
-        return this->getPathWeight() + this->getWeight();
+    int getAstarWeight(){
+        return this->getPathWeight() + this->getWeight() + this->getReachableMoviments().size();
     }
 
     vector<Moviment *> getReachableMoviments()
